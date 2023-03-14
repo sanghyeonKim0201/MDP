@@ -14,12 +14,15 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.MDPAndroid.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="Theme.MDPAndroid.Fullscreen" parent="Theme.MDPAndroid">
+        <item name="android:actionBarStyle">@style/Widget.Theme.MDPAndroid.ActionBar.Fullscreen
+        </item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
     </style>
 
-    <style name="Theme.MDPAndroid.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.MDPAndroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="ThemeOverlay.MDPAndroid.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>
