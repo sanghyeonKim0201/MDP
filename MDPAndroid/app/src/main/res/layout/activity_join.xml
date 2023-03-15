@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:background="@drawable/signup">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.615">
+
+                    <LinearLayout
+                        android:id="@+id/infoPage1"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.492"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.693">
+
+                        <EditText
+                            android:id="@+id/nameKoTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:textSize="30dp"
+                            android:hint="NAME(KO)"
+                            android:layout_marginBottom="20dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="20dp">
+
+                            <EditText
+                                android:id="@+id/userId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ems="10"
+                                android:textSize="30dp"
+                                android:inputType="textPersonName"
+                                android:hint="USER ID" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/checkBtn"
+                                android:layout_width="100dp"
+                                android:layout_height="50dp"
+                                android:text="CHECK"
+                                android:textColor="#FFFFFF"
+                                android:textSize="25dp"
+                                android:background="@drawable/button"/>
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/userPw"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:textSize="30dp"
+                            android:hint="USER PW"
+                            android:inputType="textPassword"
+                            android:layout_marginBottom="20dp"/>
+
+                        <EditText
+                            android:id="@+id/userPwCheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:textSize="30dp"
+                            android:hint="USER PW CHECK"
+                            android:inputType="textPassword"
+                            android:layout_marginBottom="20dp"/>
+
+                        <EditText
+                            android:id="@+id/userBirth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:textSize="30dp"
+                            android:hint="BIRTH"
+                            android:layout_marginBottom="20dp"/>
+
+                        <EditText
+                            android:id="@+id/userPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:textSize="30dp"
+                            android:hint="PHONE"
+                            android:layout_marginBottom="20dp"/>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:layout_width="100dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/nextBtn"
+                                android:background="@drawable/button"
+                                android:text="NEXT"
+                                android:textColor="#FFFFFF"
+                                android:textSize="25dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/infoPage2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/nameEn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="NAME(EN)"
+                android:textSize="30dp"
+                android:layout_marginBottom="50dp"/>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="50dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/beforeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button"
+                    android:textSize="30dp"
+                    android:layout_weight="2"
+                    android:layout_marginEnd="10dp"
+                    android:text="BEFORE"
+                    android:textColor="#FFFFFF"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/signBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button"
+                    android:textSize="30dp"
+                    android:layout_weight="1"
+                    android:text="SIGN"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
