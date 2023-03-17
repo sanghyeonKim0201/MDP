@@ -1,31 +1,32 @@
 package com.example.mdpandroid;
 
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.arch.core.executor.ArchTaskExecutor;
 
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import kotlin.reflect.KClass;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public interface JsonDataToServer {
 
-    default JSONObject jsonToServer(String URL, JSONObject jsonObject, String method){
-        InputStream is = null;
-        BufferedReader reader = null;
-        try {
-            URL url = new URL(URL);
+    default Observable jsonToServer(String urlStr, JsonObject jsonObject, String method){
+        return Observable.fromCallable(()->{
+            URL url = new URL(urlStr);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
-//            con.connect();
-
-            String json = jsonObject.toString();
 
             con.setConnectTimeout(15000);
             con.setReadTimeout(5000);
@@ -33,43 +34,59 @@ public interface JsonDataToServer {
             con.setRequestProperty("Accept-Charset", "UTF-8");
             con.setRequestProperty("Content-type", "application/json");
             con.setRequestMethod(method);
-
-            switch (method){
-                case "GET":con.setDoOutput(false);con.setDoInput(true);
-                default:con.setDoOutput(true);con.setDoInput(true);
-            }
+            con.setDoOutput(true);
+            con.setDoInput(true);
 
             if(jsonObject != null){
+                String json = jsonObject.toString();
                 OutputStream os = con.getOutputStream();
                 os.write(json.getBytes("utf-8"));
                 os.flush();
                 os.close();
             }
 
-
-            try{
-                is = con.getInputStream();
-                if(is != null){
-                    StringBuilder builder = new StringBuilder();
-                    reader = new BufferedReader(new InputStreamReader(is));
-                    String line;
-                    while((line = reader.readLine()) != null){
-                        builder.append(line);
-                    }
-                    reader.close();
-
-                    return new JSONObject(builder.toString());
-                }else{
-                    return null;
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
+            BufferedReader rd;
+            if (con.getResponseCode() >= 200 && con.getResponseCode() <= 300) {
+                rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {
+                rd = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                return "FAIL";
             }
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            rd.close();
+            con.disconnect();
+            return sb.toString();
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+    default Observable openAPI(String urlStr){
+        return Observable.fromCallable(()->{
+            URL url = new URL(urlStr);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(15000);
+            conn.setReadTimeout(5000);
+            conn.setUseCaches(false);
+            conn.setRequestProperty("Accept-Charset", "UTF-8");
+            conn.setRequestProperty("Content-type", "application/json");
+            conn.setRequestMethod("GET");
 
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+            BufferedReader rd;
+            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            rd.close();
+            conn.disconnect();
+            return sb.toString();
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }

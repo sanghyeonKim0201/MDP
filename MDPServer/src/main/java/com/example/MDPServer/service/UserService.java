@@ -35,15 +35,22 @@ public class UserService {
                 finger(byUser.get().getFinger())
                 .build();
     }
-    public String join(UserDTO userDTO){
-        var join = userRepository.findByUserId(userDTO.getUserId());
+    public String userIdCheck(String userId){
+        var user = userRepository.findByUserId(userId);
 
-        if(join.isPresent()){
+        if(user.isPresent()){
             return null;
         }
-        userRepository.save(userDTO.toEntity());
         JsonObject json = new JsonObject();
         json.addProperty("success", "OK");
         return new Gson().toJson(json);
+    }
+    public String join(UserDTO userDTO){
+        var user = userIdCheck(userDTO.getUserId());
+        if(user == null){
+            return null;
+        }
+        userRepository.save(userDTO.toEntity());
+        return user;
     }
 }

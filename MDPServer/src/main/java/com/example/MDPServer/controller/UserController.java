@@ -26,17 +26,15 @@ public class UserController {
     {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
     }
-//    private Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);
     @Autowired
     public UserController(UserService userService){
         this.userService = userService;
     }
     @PostMapping("/api/users/login")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO){
-
         var user = userService.login(userDTO.getUserId(), userDTO.getUserPw());
         if(user == null){
-            return null;
+            return new ResponseEntity<>(null, headers, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
@@ -44,9 +42,17 @@ public class UserController {
     public ResponseEntity<?> join(@RequestBody UserDTO userDTO){
         var join = userService.join(userDTO);
         if(join == null){
-            return null;
+            return new ResponseEntity<>(null, headers, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(join, headers, HttpStatus.CREATED);
     }
-
+    @GetMapping("/api/users/{userId}")
+    public ResponseEntity<?>userIdCheck(@PathVariable("userId") String userId){
+        System.out.println(userId);
+        var check = userService.userIdCheck(userId);
+        if(check == null){
+            return new ResponseEntity<>(null, headers, HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(check, headers, HttpStatus.OK);
+    }
 }
