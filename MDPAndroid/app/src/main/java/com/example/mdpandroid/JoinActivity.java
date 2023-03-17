@@ -41,21 +41,17 @@ public class JoinActivity extends AppCompatActivity implements JsonDataToServer 
                         builder.setTitle("경고").setMessage("아이디를 입력하세요");
                         return;
                     }
-                    new Thread(()->{
-                        try {
-                            String url = "http://10.137.208.237:8080/api/users/" +  txtBox[1].getText();
-                            Observable result = jsonToServer(url, null, "GET");
-                            if(result == null){
-                                builder.setTitle("경고").setMessage("이미 존재하는 아이디입니다");
-                                builder.create().show();
-                                check = false;
-                                return;
-                            }
-                            check = true;
-                        }catch (Exception e){
-                            e.printStackTrace();
+                    String url = "http://10.137.208.237:8080/api/users/" +  txtBox[1].getText();
+                    Observable obs = jsonToServer(url, null, "GET");
+                    obs.subscribe(r->{
+                        if(r == "FAIL"){
+                            builder.setTitle("경고").setMessage("이미 존재하는 아이디입니다");
+                            builder.create().show();
+                            check = false;
+                            return;
                         }
-                    }).start();
+                        check = true;
+                    });
                 }else if(a.getId() == R.id.nextBtn){
                     for(int i = 0; i < infoPages.length; i++){
                         infoPages[i].setVisibility(i == 0 ? View.GONE : View.VISIBLE);

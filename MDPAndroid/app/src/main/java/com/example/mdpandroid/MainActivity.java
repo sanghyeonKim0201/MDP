@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements JsonDataToServer{
             urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "="
                     + URLEncoder.encode("json", "UTF-8")); /* 데이터 타입(xml, json) */
 
-            Observable jsonStr = openAPI(urlBuilder.toString());
+            Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET");
             jsonStr.subscribe(r->{
                 JSONObject jsonObject = new JSONObject(r.toString());
                 JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements JsonDataToServer{
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getAirmanList");
             urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D"); /*Service Key*/
             urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
-            Observable jsonStr = openAPI(urlBuilder.toString());
+            Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET");
             jsonStr.subscribe(r->{
                 JSONObject jsonObject = new JSONObject(r.toString());
                 JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
