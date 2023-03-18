@@ -4,71 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:background="@drawable/login">
+    android:background="@drawable/back"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textColor="#FFFFFF"
+        android:textSize="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:background="@drawable/login_rectangle"
         android:orientation="vertical"
+        android:padding="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.552">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <EditText
             android:id="@+id/idTxt"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="USER ID"
-            android:textSize="30dp"
             android:layout_marginBottom="10dp"
-            />
+            android:ems="10"
+            android:hint="USER ID"
+            android:inputType="textPersonName"
+            android:textSize="30dp" />
 
         <EditText
             android:id="@+id/pwTxt"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:ems="10"
             android:hint="USER PW"
-            android:textSize="30dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="30dp"
-            >
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/loginButton"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
                 android:background="@drawable/button"
                 android:text="LOGIN"
-                android:layout_weight="1"
-                android:textSize="30dp"
                 android:textColor="#FFFFFF"
-                android:layout_marginEnd="5dp"/>
+                android:textSize="30dp" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/joinButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/joinButton"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:background="@drawable/button"
                 android:text="SIGN UP"
-                android:layout_weight="1"
-                android:textSize="30dp"
                 android:textColor="#FFFFFF"
-                android:layout_marginStart="5dp"/>
+                android:textSize="30dp" />
         </LinearLayout>
     </LinearLayout>
 

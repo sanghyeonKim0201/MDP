@@ -5,11 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@drawable/signup">
+    android:background="@drawable/back">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:text="SING UP"
+        android:textColor="#FFFFFF"
+        android:textSize="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/join_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
@@ -17,117 +30,119 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.615">
 
-                    <LinearLayout
-                        android:id="@+id/infoPage1"
-                        android:layout_width="300dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.492"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.693">
+        <LinearLayout
+            android:id="@+id/infoPage1"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.693">
 
-                        <EditText
-                            android:id="@+id/nameKoTxt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:textSize="30dp"
-                            android:hint="NAME(KO)"
-                            android:layout_marginBottom="20dp"/>
+            <EditText
+                android:id="@+id/nameKoTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:hint="NAME(KO)"
+                android:inputType="textPersonName"
+                android:textSize="30dp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-                            <EditText
-                                android:id="@+id/userId"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:ems="10"
-                                android:textSize="30dp"
-                                android:inputType="textPersonName"
-                                android:hint="USER ID" />
+                <EditText
+                    android:id="@+id/userId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="USER ID"
+                    android:inputType="textPersonName"
+                    android:textSize="30dp" />
 
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:id="@+id/checkBtn"
-                                android:layout_width="100dp"
-                                android:layout_height="50dp"
-                                android:text="CHECK"
-                                android:textColor="#FFFFFF"
-                                android:textSize="25dp"
-                                android:background="@drawable/button"/>
-                        </LinearLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/checkBtn"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button"
+                    android:text="CHECK"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp" />
+            </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/userPw"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:textSize="30dp"
-                            android:hint="USER PW"
-                            android:inputType="textPassword"
-                            android:layout_marginBottom="20dp"/>
+            <EditText
+                android:id="@+id/userPw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:hint="USER PW"
+                android:inputType="textPassword"
+                android:textSize="30dp" />
 
-                        <EditText
-                            android:id="@+id/userPwCheck"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:textSize="30dp"
-                            android:hint="USER PW CHECK"
-                            android:inputType="textPassword"
-                            android:layout_marginBottom="20dp"/>
+            <EditText
+                android:id="@+id/userPwCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:hint="USER PW CHECK"
+                android:inputType="textPassword"
+                android:textSize="30dp" />
 
-                        <EditText
-                            android:id="@+id/userBirth"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:textSize="30dp"
-                            android:hint="BIRTH"
-                            android:layout_marginBottom="20dp"/>
+            <EditText
+                android:id="@+id/userBirth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:hint="BIRTH"
+                android:inputType="textPersonName"
+                android:textSize="30dp" />
 
-                        <EditText
-                            android:id="@+id/userPhone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            android:textSize="30dp"
-                            android:hint="PHONE"
-                            android:layout_marginBottom="20dp"/>
+            <EditText
+                android:id="@+id/userPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:hint="PHONE"
+                android:inputType="textPersonName"
+                android:textSize="30dp" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:layout_width="100dp"
-                                android:layout_height="50dp"
-                                android:id="@+id/nextBtn"
-                                android:background="@drawable/button"
-                                android:text="NEXT"
-                                android:textColor="#FFFFFF"
-                                android:textSize="25dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/nextBtn"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button"
+                    android:text="NEXT"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/infoPage2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
