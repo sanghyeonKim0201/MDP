@@ -4,8 +4,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -19,6 +22,7 @@ public class List extends AppCompatActivity implements JsonDataToServer {
 
     String[] info = new String[4];
     TextView countTxt;
+    LinearLayout frame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +35,14 @@ public class List extends AppCompatActivity implements JsonDataToServer {
             System.out.println(info[i] + ", i : " + i);
         }
         loadData();
+        loadAPI();
     }
     void loadData(){
         countTxt = findViewById(R.id.count);
+        frame = findViewById(R.id.frame);
+    }
+    void loadAPI(){
+
         try {
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getFlightOpratInfoList"); /*URL*/
             urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D"); /*Service Key*/
@@ -88,6 +97,39 @@ public class List extends AppCompatActivity implements JsonDataToServer {
         }
 
         void init(Context context){
+            //기본 틀
+            setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(25, 20, 0, 0); // set marginTop to 20 pixels
+            setLayoutParams(params);
+            setBackground(getResources().getDrawable(R.drawable.list_panelback));
+
+            //항공 텍스트 뷰
+            TextView airLine = new TextView(context);
+            LayoutParams airLineMargin = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            airLineMargin.setMargins(20, 20, 0, 0);
+            airLine.setLayoutParams(airLineMargin);
+            airLine.setText(airlineNm);
+            airLine.setTextSize(20);
+            airLine.setTextColor(Color.parseColor("#000000"));
+
+            //옆으로 나열 레이아웃
+            LinearLayout line = new LinearLayout(context);
+            LayoutParams lineParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            line.setOrientation(LinearLayout.HORIZONTAL);
+            line.setLayoutParams(lineParams);
+            
+            //번호 텍스트 뷰
+            TextView vihicleId = new TextView(context);
+            LayoutParams vihicleIdMargin = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);//여기 부터 해야함
+            airLineMargin.setMargins(20, 20, 0, 0);
+            airLine.setLayoutParams(airLineMargin);
+            airLine.setText(this.vihicleId);
+            airLine.setTextSize(20);
+            airLine.setTextColor(Color.parseColor("#000000"));
 
         }
 
