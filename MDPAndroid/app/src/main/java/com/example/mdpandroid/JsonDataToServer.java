@@ -40,9 +40,7 @@ public interface JsonDataToServer {
                 OutputStream os = con.getOutputStream();
                 os.write(json.getBytes("utf-8"));
                 os.flush();
-                os.close();
             }
-
             BufferedReader rd;
             if (con.getResponseCode() >= 200 && con.getResponseCode() <= 300) {
                 rd = new BufferedReader(new InputStreamReader(con.getInputStream()));

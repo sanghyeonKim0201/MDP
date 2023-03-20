@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements JsonDataToServer{
     HashMap<String, String>airPlane = new HashMap<>();
     CheckBox chk;
     AlertDialog.Builder builder;
+    String date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements JsonDataToServer{
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     com[2].setEnabled(false);
-                    comKey[2] = "NO";
+                    comKey[2] = "";
                 }else{
                     com[2].setEnabled(true);
                 }
@@ -90,18 +92,25 @@ public class MainActivity extends AppCompatActivity implements JsonDataToServer{
                 int txt2 = Integer.parseInt(txt[1].getText().toString());
                 int txt3 = Integer.parseInt(txt[2].getText().toString());
 
-                LocalDate date = LocalDate.parse(String.format("%04d-%02d-%02d", txt1, txt2, txt3));
-                if(LocalDate.now().toEpochDay() > date.toEpochDay()){
+                LocalDate localDate = LocalDate.parse(String.format("%04d-%02d-%02d", txt1, txt2, txt3));
+                if(LocalDate.now().toEpochDay() > localDate.toEpochDay()){
                     builder.setTitle("경고").setMessage("이미 지난 날은 예약 불가 합니다").create().show();
                     return;
                 }
+                date = String.format("%04d%02d%02d", txt1, txt2, txt3);
             }catch (Exception e){
                 e.printStackTrace();
                 builder.setTitle("경고").setMessage("날짜가 형식이 올바 르지 않습니다 (yyyyMMdd)").create().show();
                 return;
             }
-            //값 보내기
 
+            Intent intent = new Intent(getApplicationContext(), List.class);
+            intent.putExtra("start", comKey[0]);
+            intent.putExtra("end", comKey[1]);
+            intent.putExtra("airLine", comKey[2]);
+            intent.putExtra("date", date);
+
+            startActivity(intent);
         });
     }
     void data(){
