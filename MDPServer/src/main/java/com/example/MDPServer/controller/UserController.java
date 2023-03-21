@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/users")
@@ -37,15 +35,12 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserDTO userDTO, HttpServletRequest httpServletRequest, BindingResult result){
-        HttpSession session = httpServletRequest.getSession();
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO){
         var user = userService.login(userDTO.getUserId(), userDTO.getUserPw());
         if(user == null){
-            session.invalidate();
             return new ResponseEntity<>(new JSONObject().put("status", "FAIL").toString(), headers, HttpStatus.UNAUTHORIZED);
         }
-        session.setAttribute("login", user);
-        System.out.println(session.getAttribute("login").toString());
+        System.out.println(user);
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
     @PostMapping("/join")
@@ -64,30 +59,5 @@ public class UserController {
             return new ResponseEntity<>(check.toString(), headers, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(check.toString(), headers, HttpStatus.OK);
-    }
-    @GetMapping("/login")
-    public ResponseEntity<?>loginUser(HttpServletRequest httpServletRequest){
-        try{
-            HttpSession session = httpServletRequest.getSession();
-            System.out.println("session : " + session.getAttribute("login"));
-            HashMap<String, Object>map = new HashMap<>();
-            int cnt = 0;
-            for (Field field : UserDTO.class.getDeclaredFields()) {
-                field.setAccessible(true);
-                Object value = "";
-                try{
-                    value = field.get(session.getAttribute("login"));
-                    map.put("userNo,userName1,userName2,userId,userPw,userBirth,userPhone,userPicture,finger".split(",")[cnt], value);
-                    cnt++;
-                }catch (Exception e){
-
-                }
-            }
-            System.out.println(new JSONObject(map).toString());
-            return new ResponseEntity<>(new JSONObject(map).toString(), headers, HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(new JSONObject().put("status", "FAIL"), headers, HttpStatus.UNAUTHORIZED);
-        }
     }
 }
