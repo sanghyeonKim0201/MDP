@@ -1,9 +1,9 @@
 package com.example.mdpandroid;
 
 
-import androidx.arch.core.executor.ArchTaskExecutor;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
@@ -14,14 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
-public interface JsonDataToServer {
+public interface tools {
 
     default Observable jsonToServer(String urlStr, JsonObject jsonObject, String method){
         return Observable.fromCallable(()->{
@@ -58,4 +55,12 @@ public interface JsonDataToServer {
             return sb.toString();
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
+    default float size(int type, int value, DisplayMetrics display){
+        return TypedValue.applyDimension(type, value, display);
+    }
+    default float dp(int value, DisplayMetrics display){
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, display);
+    }
+
+
 }

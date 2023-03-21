@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+	implementation group: 'org.json', name: 'json', version: '20210307'
+	implementation group: 'commons-io', name: 'commons-io', version: '2.9.0'
 	implementation 'com.google.code.gson:gson:2.10.1'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'

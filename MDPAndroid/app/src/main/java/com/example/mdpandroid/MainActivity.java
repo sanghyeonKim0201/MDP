@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +24,7 @@ import java.util.HashMap;
 
 import io.reactivex.rxjava3.core.Observable;
 
-public class MainActivity extends AppCompatActivity implements JsonDataToServer{
+public class MainActivity extends AppCompatActivity implements tools {
 
     TextView searchBtn;
     Spinner com[] = new Spinner[3];

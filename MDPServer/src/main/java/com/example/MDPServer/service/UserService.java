@@ -4,6 +4,7 @@ import com.example.MDPServer.domain.repository.UserRepository;
 import com.example.MDPServer.dto.UserDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ public class UserService {
     }
     public UserDTO login(String userId, String userPw){
         var byUser = userRepository.findByUserIdAndUserPw(userId, userPw);
-
         if(!byUser.isPresent()){
             return null;
         }
@@ -35,20 +35,24 @@ public class UserService {
                 finger(byUser.get().getFinger())
                 .build();
     }
-    public String userIdCheck(String userId){
+    public JSONObject userIdCheck(String userId){
         var user = userRepository.findByUserId(userId);
-
+        System.out.println(user.isPresent());
+        JSONObject json = new JSONObject();
         if(user.isPresent()){
-            return null;
+            json.put("status", "FAIL");
+            return json;
         }
-        JsonObject json = new JsonObject();
-        json.addProperty("success", "OK");
-        return new Gson().toJson(json);
+
+        json.put("status", "OK");
+        return json;
     }
-    public String join(UserDTO userDTO){
+    public JSONObject join(UserDTO userDTO){
         var user = userIdCheck(userDTO.getUserId());
-        if(user == null){
-            return null;
+        JSONObject json = new JSONObject();
+        if(user.getString("status").equals("FAIL")){
+            json.put("status", "FAIL");
+            return json;
         }
         userRepository.save(userDTO.toEntity());
         return user;

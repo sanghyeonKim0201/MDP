@@ -5,25 +5,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LoginActivity extends AppCompatActivity implements JsonDataToServer {
+public class LoginActivity extends AppCompatActivity implements tools {
     EditText[] txtBox = new EditText[2];
     Button btn;
     TextView joinTxt;
@@ -62,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements JsonDataToServer
                         builder.setTitle("경고").setMessage("아이디 또는 비밀번호가 일치하지 않습니다").create().show();
                         return;
                     }else{
+                        System.out.println(r);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }
