@@ -1,47 +1,38 @@
 package com.example.MDPServer.controller;
 
-import com.example.MDPServer.domain.entity.User;
 import com.example.MDPServer.dto.UserDTO;
+import com.example.MDPServer.service.SecurityService;
 import com.example.MDPServer.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
     private UserService userService;
     private final HttpHeaders headers = new HttpHeaders();
     {
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
     }
-    @Autowired
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO){
         var user = userService.login(userDTO.getUserId(), userDTO.getUserPw());
-        if(user == null){
+        if(user.getString("status").equals("FAIL")){
             return new ResponseEntity<>(new JSONObject().put("status", "FAIL").toString(), headers, HttpStatus.UNAUTHORIZED);
         }
-        System.out.println(user);
-        return new ResponseEntity<>(user, headers, HttpStatus.OK);
+//        System.out.println(securityService.isValidToken(user.getString("")));
+        return new ResponseEntity<>(user.toString(), headers, HttpStatus.OK);
     }
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserDTO userDTO){
@@ -59,5 +50,11 @@ public class UserController {
             return new ResponseEntity<>(check.toString(), headers, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(check.toString(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/token")
+    public ResponseEntity<?> getToken(HttpServletRequest request){
+        JSONObject json = new JSONObject();
+        json.put("token", securityService.resolveToken(request));
+        return new ResponseEntity<>(json.toString(), headers, HttpStatus.OK);
     }
 }

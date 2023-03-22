@@ -2,12 +2,17 @@ package com.example.MDPServer.dto;
 
 import com.example.MDPServer.domain.entity.User;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 
 @Data
 @NoArgsConstructor
-public class UserDTO {
+public class UserDTO implements UserDetails {
     private Long userNo = 0L;
     private String userName1;
     private String userName2;
@@ -43,5 +48,40 @@ public class UserDTO {
         this.userPhone = userPhone;
         this.userPicture = userPicture;
         this.finger = finger;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.userPw;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
