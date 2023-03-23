@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/users/**").permitAll()
-                .requestMatchers("/api/schedule/**").authenticated().and()
+                .requestMatchers("/api/schedules/**").authenticated().and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

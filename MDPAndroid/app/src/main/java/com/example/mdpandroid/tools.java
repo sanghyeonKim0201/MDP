@@ -4,7 +4,7 @@ package com.example.mdpandroid;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import com.google.gson.JsonObject;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 
@@ -20,7 +20,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public interface tools {
 
-    default Observable jsonToServer(String urlStr, JsonObject jsonObject, String method){
+    default Observable jsonToServer(String urlStr, JSONObject jsonObject, String method, String header){
         return Observable.fromCallable(()->{
             URL url = new URL(urlStr);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -28,6 +28,9 @@ public interface tools {
             con.setUseCaches(false);
             con.setRequestProperty("Accept-Charset", "UTF-8");
             con.setRequestProperty("Content-type", "application/json");
+            if(header != null){
+                con.setRequestProperty("Authorization", header);
+            }
             con.setRequestMethod(method);
             con.setDoInput(true);
 

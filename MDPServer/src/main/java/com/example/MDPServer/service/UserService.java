@@ -2,13 +2,16 @@ package com.example.MDPServer.service;
 
 import com.example.MDPServer.domain.repository.UserRepository;
 import com.example.MDPServer.dto.UserDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class UserService{
@@ -36,10 +39,31 @@ public class UserService{
             json.put("status", "FAIL");
             return json;
         }
+        UserDTO user =  UserDTO.builder()
+                .userNo(byUser.get().getUserNo())
+                .userName1(byUser.get().getUserName1())
+                .userName2(byUser.get().getUserName2())
+                .userPhone(byUser.get().getUserPhone())
+                .userBirth(byUser.get().getUserBirth())
+                .userId(byUser.get().getUserId())
+                .userPw(byUser.get().getUserPw())
+                .userPicture(byUser.get().getUserPicture())
+                .finger(byUser.get().getFinger()).build();
+        HashMap<String, Object>userMap = new HashMap<>();
+        for (Field field : UserDTO.class.getDeclaredFields()) {
+            field.setAccessible(true);
+            Object value = "";
+            try{
+                value = field.get(user);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            userMap.put(field.getName(), value);
+        }
         var token = securityService.createToken(byUser.get().getUserNo().toString(), userId);
         json.put("status", "OK");
         json.put("token", token);
-
+        json.put("user", userMap);
         return json;
     }
     public JSONObject userIdCheck(String userId){

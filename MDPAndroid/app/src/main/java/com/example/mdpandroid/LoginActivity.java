@@ -4,13 +4,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
+import org.json.JSONObject;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -43,17 +45,32 @@ public class LoginActivity extends AppCompatActivity implements tools {
                     }
                 }
                 String url = "http://10.137.208.247:8080/api/users/login";
-                JsonObject json = new JsonObject();
-                for(int i = 0; i < txtBox.length; i++){
-                    json.addProperty("userId,userPw".split(",")[i], txtBox[i].getText().toString());
+                JSONObject json = new JSONObject();
+                try {
+                    for(int i = 0; i < txtBox.length; i++){
+                        json.put("userId,userPw".split(",")[i], txtBox[i].getText().toString());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                Observable<String> obs = jsonToServer(url, json, "POST"); //get요청에는 Request body를 담을 수 없어서 post로 보냄 url에 담는거 보안 상 위험(https가 최고의 방법)
+                Observable<String> obs = jsonToServer(url, json, "POST", null); //get요청에는 Request body를 담을 수 없어서 post로 보냄 url에 담는거 보안 상 위험(https가 최고의 방법)
                 obs.subscribe(r->{
                     if(r.equals("FAIL")){
                         builder.setTitle("경고").setMessage("아이디 또는 비밀번호가 일치하지 않습니다").create().show();
                         return;
                     }else{
-                        System.out.println(r);
+                        String token = new JSONObject(r.toString()).getString("token");
+
+                        SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+
+                        editor.putString("token", token);
+                        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
+                        JSONObject user = new JSONObject(r.toString()).getJSONObject("user");
+
+                        editor.putString("userNo", user.getString("userNo"));
+                        editor.apply();
+
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }

@@ -2,7 +2,6 @@ package com.example.MDPServer.service;
 
 import com.example.MDPServer.domain.repository.UserRepository;
 import com.example.MDPServer.dto.UserDTO;
-import com.example.MDPServer.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -65,7 +64,7 @@ public class SecurityService implements UserDetailsService {
                 .compact();
     }
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = loadUserByUsername(this.getUserNo(token));
+        UserDetails userDetails = loadUserByUsername(this.getUserNo(token).toString());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
     @Override
@@ -84,12 +83,12 @@ public class SecurityService implements UserDetailsService {
                 finger(byUser.get().getFinger())
                 .build();
     }
-    public String getUserNo(String token){
-        return Jwts.parserBuilder()
+    public Long getUserNo(String token){
+        return Long.parseLong(Jwts.parserBuilder()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(secret))
                 .build()
                 .parseClaimsJws(token)
-                .getBody().get("userNo").toString();
+                .getBody().get("userNo").toString());
     }
     public String getUserName(String token){
         return Jwts.parserBuilder()
@@ -98,28 +97,9 @@ public class SecurityService implements UserDetailsService {
                 .parseClaimsJws(token)
                 .getBody().get("userName").toString();
     }
-
-//    public Boolean isValidToken(String token, String userNo){
-//
-//        String user = (String) Jwts.parserBuilder()
-//                .setSigningKey(DatatypeConverter.parseBase64Binary(secret))
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody().get("userNo");
-//
-//        Boolean expirationDate = Jwts.parserBuilder()
-//                .setSigningKey(DatatypeConverter.parseBase64Binary(secret))
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody().getExpiration().before(new Date(System.currentTimeMillis()));
-//
-//        return user.equals(userNo) && !expirationDate;
-//
-//    }
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secret)).parseClaimsJws(jwtToken);
-            System.out.println();
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;

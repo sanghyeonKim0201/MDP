@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements tools {
     CheckBox chk;
     AlertDialog.Builder builder;
     String date;
+    TextView reservationTxt;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements tools {
         data();
         loadAirLine();
         loadAirPlane();
+
+        reservationTxt.setOnClickListener(a->{
+            Intent intent = new Intent(getApplicationContext(), ScheduleListActivity.class);
+            startActivity(intent);
+        });
+
         chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -103,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements tools {
                 return;
             }
 
-            Intent intent = new Intent(getApplicationContext(), List.class);
+            Intent intent = new Intent(getApplicationContext(), ListActivity.class);
             intent.putExtra("start", comKey[0]);
             intent.putExtra("end", comKey[1]);
             intent.putExtra("airLine", comKey[2]);
@@ -122,16 +132,20 @@ public class MainActivity extends AppCompatActivity implements tools {
         searchBtn = findViewById(R.id.searchTxt);
         chk = findViewById(R.id.selectChk);
         builder = new AlertDialog.Builder(MainActivity.this);
+        reservationTxt = findViewById(R.id.scheduleMoveTxt);
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
     }
     void loadAirPlane(){
         try {
+
             StringBuilder urlBuilder = new StringBuilder(
                     "http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getArprtList"); /* URL */
-            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D"); /* Service Key */
+            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + pref.getString("openAPI", null)); /* Service Key */
             urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "="
                     + URLEncoder.encode("json", "UTF-8")); /* 데이터 타입(xml, json) */
 
-            Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET");
+            Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET", null);
             jsonStr.subscribe(r->{
                 JSONObject jsonObject = new JSONObject(r.toString());
                 JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
@@ -155,9 +169,9 @@ public class MainActivity extends AppCompatActivity implements tools {
     void loadAirLine(){
         try {
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getAirmanList");
-            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D"); /*Service Key*/
+            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + pref.getString("openAPI", null)); /*Service Key*/
             urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
-            Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET");
+            Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET", null);
             jsonStr.subscribe(r->{
                 JSONObject jsonObject = new JSONObject(r.toString());
                 JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");

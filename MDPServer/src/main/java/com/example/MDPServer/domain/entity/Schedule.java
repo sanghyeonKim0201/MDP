@@ -16,8 +16,14 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "s_no")
     private Long scheduleNo = 0L;
+    @Column(name = "s_airlineId")
+    private String airlineId;
     @Column(name = "s_airlineName")
     private String airlineName;
+    @Column(name = "s_arrAirportName")
+    private String arrAirportName;
+    @Column(name = "s_depAirportName")
+    private String depAirportName;
     @Column(name = "s_arrAirportId")
     private String arrAirportId;
     @Column(name = "s_depAirportId")
@@ -33,14 +39,17 @@ public class Schedule {
     private User userNo;
 
     @Builder
-    public Schedule(Long scheduleNo, String airlineName, String arrAirportId, String depAirportId, String arrPlandTime, String depPlandTime, String vihicleId, User userNo){
+    public Schedule(Long scheduleNo, String airlineName, String arrAirportId, String depAirportId, String arrPlandTime, String depPlandTime, String vihicleId, User userNo, String airlineId, String arrAirportName, String depAirportName){
         this.scheduleNo = scheduleNo;
         this.airlineName = airlineName;
-        this.arrAirportId = arrAirportId;
-        this.depAirportId = depAirportId;
+        this.arrAirportName = arrAirportName;
+        this.depAirportName = depAirportName;
         this.arrPlandTime = arrPlandTime;
         this.depPlandTime = depPlandTime;
         this.vihicleId = vihicleId;
         this.userNo = userNo;
+        this.arrAirportId= arrAirportId;
+        this.depAirportId= depAirportId;
+        this.airlineId= airlineId;
     }
 }

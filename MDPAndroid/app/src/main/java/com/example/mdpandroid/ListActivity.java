@@ -4,13 +4,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,15 +19,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 import io.reactivex.rxjava3.core.Observable;
 
-public class List extends AppCompatActivity implements tools {
+public class ListActivity extends AppCompatActivity implements tools {
 
     String[] info = new String[4];
     TextView countTxt;
     LinearLayout frame;
-    JSONObject user;
+    AlertDialog.Builder builder;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +46,19 @@ public class List extends AppCompatActivity implements tools {
         }
         loadData();
         loadAPI();
-        String url = "http://10.137.208.247:8080/api/users/login";
-        Observable obs = jsonToServer(url, null, "GET");
-        obs.subscribe(a->{
-            System.out.println("user : " + a.toString());
-        });
     }
     void loadData(){
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
         countTxt = findViewById(R.id.count);
         frame = findViewById(R.id.frame);
+        builder = new AlertDialog.Builder(ListActivity.this);
     }
     void loadAPI(){
 
         try {
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getFlightOpratInfoList"); /*URL*/
-            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D"); /*Service Key*/
+            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + pref.getString("openAPI", null)); /*Service Key*/
             urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
             urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
             urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*데이터 타입(xml, json)*/
@@ -65,10 +69,20 @@ public class List extends AppCompatActivity implements tools {
                 urlBuilder.append("&" + URLEncoder.encode("airlineId","UTF-8") + "=" + URLEncoder.encode(info[2], "UTF-8")); /*항공사ID*/
             }
 
-            Observable obs = jsonToServer(urlBuilder.toString(), null, "GET");
+            Observable obs = jsonToServer(urlBuilder.toString(), null, "GET", null);
             obs.subscribe(a->{
+
+                if(a.equals("FAIL")){
+                    builder.setTitle("정보").setMessage("비행기 일정이 없습니다").create().show();
+                    return;
+                }
+
                 JSONObject jsonObject = new JSONObject(a.toString()).getJSONObject("response");
                 countTxt.setText("총 " + jsonObject.getJSONObject("body").getString("totalCount") + "건의 검색");
+                if(jsonObject.getJSONObject("body").getString("totalCount").equals("0")){
+                    builder.setTitle("정보").setMessage("비행기 일정이 없습니다").create().show();
+                    return;
+                }
                 JSONArray jsonArray = jsonObject.getJSONObject("body").getJSONObject("items").getJSONArray("item");
                 for(int i = 0; i < jsonArray.length(); i++){
                     JSONObject item = jsonArray.getJSONObject(i);
@@ -93,14 +107,13 @@ public class List extends AppCompatActivity implements tools {
         String arrPlandTime;
         String depPlandTime;
         String vihicleId;
-
         public Panel(Context context, String airlineNm, String arrAirportNm, String depAirportNm, String arrPlandTime, String depPlandTime, String vihicleId){
             super(context);
             this.airlineNm = airlineNm;
             this.arrAirportNm = arrAirportNm;
             this.depAirportNm = depAirportNm;
-            this.arrPlandTime = arrPlandTime.substring(8, 10) + " : " + arrPlandTime.substring(10, 12);
-            this.depPlandTime = depPlandTime.substring(8, 10) + " : " + depPlandTime.substring(10, 12);
+            this.arrPlandTime = LocalDateTime.parse(arrPlandTime, DateTimeFormatter.ofPattern("yyyyMMddHHmm")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            this.depPlandTime = LocalDateTime.parse(depPlandTime, DateTimeFormatter.ofPattern("yyyyMMddHHmm")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             this.vihicleId = vihicleId;
 
             init(context);
@@ -108,7 +121,7 @@ public class List extends AppCompatActivity implements tools {
         }
         void event(){
             setOnClickListener(a->{
-                AlertDialog.Builder builder = new AlertDialog.Builder(List.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
                 builder.setTitle("정보").setMessage("이 일정으로 예약하시겠습니까?");
                 builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
                     @Override
@@ -120,15 +133,38 @@ public class List extends AppCompatActivity implements tools {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        JSONObject json = new JSONObject();
                         try {
-                            json.put("airlineName", airlineNm);
-                            json.put("depAirportId", depAirportNm);
-                            json.put("arrAirportId", arrAirportNm);
-                            json.put("arrPlandTime", arrPlandTime);
-                            json.put("depPlandTime", depPlandTime);
-                            json.put("vihicleId", vihicleId);
-//                            json.put("userNo")
+
+                            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getAirmanList");
+                            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + pref.getString("openAPI", null)); /*Service Key*/
+                            urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+                            Observable airline = jsonToServer(urlBuilder.toString(), null, "GET", null);
+                            airline.subscribe(a->{
+                                JSONObject jsonObject = new JSONObject(a.toString());
+                                JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
+                                HashMap<String, Object>airLine = new HashMap<>();
+                                for(int i =0; i <  jsonArray.length(); i++){
+                                    JSONObject item = jsonArray.getJSONObject(i);
+                                    airLine.put(item.getString("airlineId"), item.getString("airlineNm"));
+                                }
+                                JSONObject json = new JSONObject();
+                                json.put("airlineName", airlineNm);
+                                json.put("depAirportName", depAirportNm);
+                                json.put("arrAirportName", arrAirportNm);
+                                json.put("depAirportId", info[0]);
+                                json.put("arrAirportId", info[1]);
+                                json.put("arrPlandTime", arrPlandTime);
+                                json.put("depPlandTime", depPlandTime);
+                                json.put("vihicleId", vihicleId);
+                                json.put("airlineId", airLine.entrySet().stream().filter(e->e.getValue().toString().indexOf(airlineNm) != -1).map(e->e.getKey().toString()).findAny().get().toString());
+                                System.out.println(json.getString("airlineId"));
+                                String url = "http://10.137.208.247:8080/api/schedules/reservation";
+                                Observable obs = jsonToServer(url, json, "POST", pref.getString("token", null));
+                                obs.subscribe(e->{
+                                    Log.i("status", "success");
+                                });
+                            });
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -152,7 +188,7 @@ public class List extends AppCompatActivity implements tools {
             //항공 텍스트 뷰
             TextView airLine = new TextView(context);
             LayoutParams airLineMargin = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            airLineMargin.setMargins((int)dp(20, display), (int)dp(20, display), 0, 0);
+            airLineMargin.setMargins((int)dp(10, display), (int)dp(20, display), 0, 0);
             airLine.setLayoutParams(airLineMargin);
             airLine.setText(airlineNm);
             airLine.setTextSize(20);
@@ -169,19 +205,19 @@ public class List extends AppCompatActivity implements tools {
             //번호 텍스트 뷰
             TextView vihicleId = new TextView(context);
             LayoutParams vihicleIdMargin = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);//여기 부터 해야함
-            vihicleIdMargin.setMargins((int)dp(20, display), 0, 0, 0);
+            vihicleIdMargin.setMargins((int)dp(10, display), 0, 0, 0);
             vihicleId.setLayoutParams(vihicleIdMargin);
             vihicleId.setText(this.vihicleId);
-            vihicleId.setTextSize(20);
+            vihicleId.setTextSize(15);
             vihicleId.setTextColor(Color.parseColor("#787373"));
             line.addView(vihicleId);
 
             //출발시간
             TextView depTime = new TextView(context);
             LayoutParams depTimeMargins = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            depTimeMargins.setMargins((int) dp(20, display), 0, 0, 0);
+            depTimeMargins.setMargins((int) dp(10, display), 0, 0, 0);
             depTime.setLayoutParams(depTimeMargins);
-            depTime.setTextSize(20);
+            depTime.setTextSize(10);
             depTime.setTextColor(Color.parseColor("#000000"));
             depTime.setText(this.depPlandTime);
             line.addView(depTime);
@@ -189,7 +225,7 @@ public class List extends AppCompatActivity implements tools {
             //비행기 이미지
             TextView image = new TextView(context);
             LayoutParams imageMargins = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            imageMargins.setMargins((int) dp(20, display), 0, 0, (int)dp(10, display));
+            imageMargins.setMargins((int) dp(10, display), 0, 0, (int)dp(10, display));
             image.setLayoutParams(imageMargins);
             image.setBackground(getResources().getDrawable(R.drawable.list_airplane));
             line.addView(image);
@@ -199,7 +235,7 @@ public class List extends AppCompatActivity implements tools {
             LayoutParams arrTimeMargins = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             arrTimeMargins.setMargins((int) dp(20, display), 0, 0, 0);
             arrTime.setLayoutParams(depTimeMargins);
-            arrTime.setTextSize(20);
+            arrTime.setTextSize(10);
             arrTime.setTextColor(Color.parseColor("#000000"));
             arrTime.setText(this.arrPlandTime);
             line.addView(arrTime);

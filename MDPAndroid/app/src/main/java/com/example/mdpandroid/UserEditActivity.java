@@ -13,8 +13,7 @@ import android.widget.LinearLayout;
 import java.time.LocalDate;
 
 import io.reactivex.rxjava3.core.Observable;
-
-public class JoinActivity extends AppCompatActivity implements tools {
+public class UserEditActivity extends AppCompatActivity implements tools {
 
     EditText[] txtBox = new EditText[7];
     Button[] btn = new Button[4];
@@ -49,15 +48,15 @@ public class JoinActivity extends AppCompatActivity implements tools {
                         }
                         check = true;
                     });
-                }else if(a.getId() == R.id.nextBtn){
+                }else if(a.getId() == R.id.nextBtn2){
                     for(int i = 0; i < infoPages.length; i++){
                         infoPages[i].setVisibility(i == 0 ? View.GONE : View.VISIBLE);
                     }
-                }else if(a.getId() == R.id.beforeBtn){
+                }else if(a.getId() == R.id.beforeBtn2){
                     for(int i = 0; i < infoPages.length; i++){
                         infoPages[i].setVisibility(i == 1 ? View.GONE : View.VISIBLE);
                     }
-                }else if(a.getId() == R.id.signBtn){
+                }else if(a.getId() == R.id.putBtn){
                     for(EditText t : txtBox){
                         if(t.getText().equals("")){
                             builder.setTitle("경고").setMessage("빈칸이 존재합니다").create().show();
@@ -107,15 +106,15 @@ public class JoinActivity extends AppCompatActivity implements tools {
     }
     void data(){
         for(int i = 0; i < txtBox.length; i++){
-            txtBox[i] = findViewById(new int[]{R.id.nameKoTxt, R.id.userId, R.id.userPw, R.id.userPwCheck,
-            R.id.userBirth, R.id.userPhone, R.id.nameEn}[i]);
+            txtBox[i] = findViewById(new int[]{R.id.nameKoTxt2, R.id.userId2, R.id.userPw2, R.id.userPwCheck2,
+                    R.id.userBirth2, R.id.userPhone2, R.id.nameEn2}[i]);
         }
         for(int i = 0; i < btn.length; i++){
-            btn[i] = findViewById(new int[]{R.id.checkBtn, R.id.nextBtn, R.id.beforeBtn, R.id.signBtn}[i]);
+            btn[i] = findViewById(new int[]{R.id.checkBtn2, R.id.nextBtn2, R.id.beforeBtn2, R.id.putBtn}[i]);
         }
-        builder = new AlertDialog.Builder(JoinActivity.this);
+        builder = new AlertDialog.Builder(UserEditActivity.this);
         for(int i = 0; i < infoPages.length; i++){
-            infoPages[i] = findViewById(new int[]{R.id.infoPage1, R.id.infoPage2}[i]);
+            infoPages[i] = findViewById(new int[]{R.id.infoPage12, R.id.infoPage22}[i]);
         }
     }
 }

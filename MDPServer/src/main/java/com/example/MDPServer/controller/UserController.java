@@ -31,7 +31,6 @@ public class UserController {
         if(user.getString("status").equals("FAIL")){
             return new ResponseEntity<>(new JSONObject().put("status", "FAIL").toString(), headers, HttpStatus.UNAUTHORIZED);
         }
-//        System.out.println(securityService.isValidToken(user.getString("")));
         return new ResponseEntity<>(user.toString(), headers, HttpStatus.OK);
     }
     @PostMapping("/join")
@@ -51,10 +50,5 @@ public class UserController {
         }
         return new ResponseEntity<>(check.toString(), headers, HttpStatus.OK);
     }
-    @GetMapping("/token")
-    public ResponseEntity<?> getToken(HttpServletRequest request){
-        JSONObject json = new JSONObject();
-        json.put("token", securityService.resolveToken(request));
-        return new ResponseEntity<>(json.toString(), headers, HttpStatus.OK);
-    }
+
 }
