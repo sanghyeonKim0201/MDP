@@ -4,40 +4,83 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 
 import io.reactivex.rxjava3.core.Observable;
+
 public class UserEditActivity extends AppCompatActivity implements tools {
+
 
     EditText[] txtBox = new EditText[7];
     Button[] btn = new Button[4];
     AlertDialog.Builder builder;
     LinearLayout infoPages[] = new LinearLayout[2];
     Boolean check = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join);
-
+        setContentView(R.layout.activity_user_edit);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         data();
-
+        loadData();
         infoPages[1].setVisibility(View.GONE);
+        event();
+    }
+
+    void data(){
+        for(int i = 0; i < txtBox.length; i++){
+            txtBox[i] = findViewById(new int[]{R.id.putNameKoTxt, R.id.putUserId, R.id.putUserPw, R.id.putUserPwCheck,
+                    R.id.putUserBirth, R.id.putUserPhone, R.id.putNameEn}[i]);
+        }
+        for(int i = 0; i < btn.length; i++){
+            btn[i] = findViewById(new int[]{R.id.putCheckBtn, R.id.putNextBtn, R.id.putBeforeBtn, R.id.putSignBtn}[i]);
+        }
+        builder = new AlertDialog.Builder(UserEditActivity.this);
+        for(int i = 0; i < infoPages.length; i++){
+            infoPages[i] = findViewById(new int[]{R.id.putInfoPage1, R.id.putInfoPage2}[i]);
+        }
+    }
+    void loadData(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        String url = "http://10.137.208.247:8080/api/users/" + pref.getString("userNo", null);
+        Observable obs = jsonToServer(url, null, "GET", pref.getString("token", null));
+        obs.subscribe(a->{
+            try {
+                if(a.equals("FAIL")){
+                    builder.setTitle("경고").setMessage("다시 시도해주세요").create().show();
+                    return;
+                }
+                JSONObject json = new JSONObject(a.toString()).getJSONObject("user");
+                for(int i = 0; i < txtBox.length; i++){
+                    if(i == 2 || i == 3)continue;
+                    txtBox[i].setText(json.getString("userName1,userId,,,userBirth,userPhone,userName2".split(",")[i]));
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    void event(){
         for(Button b : btn){
             b.setOnClickListener(a->{
-                if(a.getId() == R.id.checkBtn){
+                if(a.getId() == R.id.putCheckBtn){
                     if(txtBox[1].getText().equals("")){
                         builder.setTitle("경고").setMessage("아이디를 입력하세요");
                         return;
                     }
-                    String url = "http://10.137.208.247:8080/api/users/" +  txtBox[1].getText();
+                    String url = "http://10.137.208.247:8080/api/users?userId=" +  txtBox[1].getText();
                     Observable obs = jsonToServer(url, null, "GET", null);
                     obs.subscribe(r->{
                         if(r == "FAIL"){
@@ -48,15 +91,15 @@ public class UserEditActivity extends AppCompatActivity implements tools {
                         }
                         check = true;
                     });
-                }else if(a.getId() == R.id.nextBtn2){
+                }else if(a.getId() == R.id.putNextBtn){
                     for(int i = 0; i < infoPages.length; i++){
                         infoPages[i].setVisibility(i == 0 ? View.GONE : View.VISIBLE);
                     }
-                }else if(a.getId() == R.id.beforeBtn2){
+                }else if(a.getId() == R.id.putBeforeBtn){
                     for(int i = 0; i < infoPages.length; i++){
                         infoPages[i].setVisibility(i == 1 ? View.GONE : View.VISIBLE);
                     }
-                }else if(a.getId() == R.id.putBtn){
+                }else if(a.getId() == R.id.putSignBtn){
                     for(EditText t : txtBox){
                         if(t.getText().equals("")){
                             builder.setTitle("경고").setMessage("빈칸이 존재합니다").create().show();
@@ -102,19 +145,6 @@ public class UserEditActivity extends AppCompatActivity implements tools {
 
                 }
             });
-        }
-    }
-    void data(){
-        for(int i = 0; i < txtBox.length; i++){
-            txtBox[i] = findViewById(new int[]{R.id.nameKoTxt2, R.id.userId2, R.id.userPw2, R.id.userPwCheck2,
-                    R.id.userBirth2, R.id.userPhone2, R.id.nameEn2}[i]);
-        }
-        for(int i = 0; i < btn.length; i++){
-            btn[i] = findViewById(new int[]{R.id.checkBtn2, R.id.nextBtn2, R.id.beforeBtn2, R.id.putBtn}[i]);
-        }
-        builder = new AlertDialog.Builder(UserEditActivity.this);
-        for(int i = 0; i < infoPages.length; i++){
-            infoPages[i] = findViewById(new int[]{R.id.infoPage12, R.id.infoPage22}[i]);
         }
     }
 }

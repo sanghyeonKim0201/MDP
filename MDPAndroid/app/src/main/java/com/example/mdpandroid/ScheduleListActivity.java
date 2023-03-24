@@ -37,7 +37,7 @@ public class ScheduleListActivity extends AppCompatActivity implements tools{
 
         data();
 
-        String url = "http://localhost:8080/api/schedules?userNo=" + pref.getString("userNo", null);
+        String url = "http://10.137.208.247:8080/api/schedules?userNo=" + pref.getString("userNo", null);
         System.out.println(pref.getString("userNo", null) + ", " + pref.getString("token", null));
         Observable obs = jsonToServer(url, null, "GET", pref.getString("token", null));
         obs.subscribe(a->{

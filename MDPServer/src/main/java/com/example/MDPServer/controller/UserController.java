@@ -4,6 +4,7 @@ import com.example.MDPServer.dto.UserDTO;
 import com.example.MDPServer.service.SecurityService;
 import com.example.MDPServer.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.logging.Log;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -41,14 +42,25 @@ public class UserController {
         }
         return new ResponseEntity<>(join.toString(), headers, HttpStatus.CREATED);
     }
-    @GetMapping("/{userId}")
-    public ResponseEntity<?>userIdCheck(@PathVariable("userId") String userId){
+
+    @GetMapping
+    public ResponseEntity<?>userIdCheck(@RequestParam("userId") String userId){
         System.out.println(userId);
         var check = userService.userIdCheck(userId);
         if(check.getString("status").equals("FAIL")){
             return new ResponseEntity<>(check.toString(), headers, HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(check.toString(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/{userNo}")
+    public ResponseEntity<?>userInfo(@PathVariable("userNo") String userNo){
+        System.out.println(userNo);
+        var user = userService.getUser(Long.parseLong(userNo));
+        if(user.getString("status").equals("FAIL")){
+            return new ResponseEntity<>(user.toString(), headers, HttpStatus.UNAUTHORIZED);
+        }else{
+            return new ResponseEntity<>(user.toString(), headers, HttpStatus.OK);
+        }
     }
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
+    tools:context=".UserEditActivity"
     android:background="@drawable/back">
 
     <TextView
@@ -14,12 +14,12 @@
         android:text="EDIT"
         android:textColor="#FFFFFF"
         android:textSize="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayoutEdit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/constraintLayoutEdit"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:background="@drawable/join_rectangle"
@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.615">
 
         <LinearLayout
-            android:id="@+id/infoPage12"
+            android:id="@+id/putInfoPage1"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -44,7 +44,7 @@
             app:layout_constraintVertical_bias="0.693">
 
             <EditText
-                android:id="@+id/nameKoTxt2"
+                android:id="@+id/putNameKoTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -60,7 +60,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/userId2"
+                    android:id="@+id/putUserId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -70,7 +70,7 @@
                     android:textSize="30dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/checkBtn2"
+                    android:id="@+id/putCheckBtn"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:background="@drawable/button"
@@ -80,7 +80,7 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/userPw2"
+                android:id="@+id/putUserPw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -90,7 +90,7 @@
                 android:textSize="30dp" />
 
             <EditText
-                android:id="@+id/userPwCheck2"
+                android:id="@+id/putUserPwCheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -100,7 +100,7 @@
                 android:textSize="30dp" />
 
             <EditText
-                android:id="@+id/userBirth2"
+                android:id="@+id/putUserBirth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -110,7 +110,7 @@
                 android:textSize="30dp" />
 
             <EditText
-                android:id="@+id/userPhone2"
+                android:id="@+id/putUserPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/nextBtn2"
+                    android:id="@+id/putNextBtn"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:background="@drawable/button"
@@ -138,7 +138,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/infoPage22"
+            android:id="@+id/putInfoPage2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -149,7 +149,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/nameEn2"
+                android:id="@+id/putNameEn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -159,7 +159,7 @@
                 android:layout_marginBottom="50dp"/>
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/putImageView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginBottom="50dp"
@@ -171,7 +171,7 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/beforeBtn2"
+                    android:id="@+id/putBeforeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button"
@@ -182,13 +182,13 @@
                     android:textColor="#FFFFFF"/>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/putBtn"
+                    android:id="@+id/putSignBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button"
                     android:textSize="30dp"
                     android:layout_weight="1"
-                    android:text="PUT"
+                    android:text="EDIT"
                     android:textColor="#FFFFFF"/>
             </LinearLayout>
 

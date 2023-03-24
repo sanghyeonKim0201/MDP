@@ -49,6 +49,7 @@ public class UserService{
                 .userPw(byUser.get().getUserPw())
                 .userPicture(byUser.get().getUserPicture())
                 .finger(byUser.get().getFinger()).build();
+
         HashMap<String, Object>userMap = new HashMap<>();
         for (Field field : UserDTO.class.getDeclaredFields()) {
             field.setAccessible(true);
@@ -89,6 +90,42 @@ public class UserService{
 
         userRepository.save(userDTO.toEntity());
         return user;
+    }
+    public JSONObject getUser(Long userNo){
+        var byUser = userRepository.findByUserNo(userNo);
+        JSONObject json = new JSONObject();
+        if(!byUser.isPresent()){
+            json.put("status", "FAIL");
+            return json;
+        }
+        UserDTO user =  UserDTO.builder()
+                .userNo(byUser.get().getUserNo())
+                .userName1(byUser.get().getUserName1())
+                .userName2(byUser.get().getUserName2())
+                .userPhone(byUser.get().getUserPhone())
+                .userBirth(byUser.get().getUserBirth())
+                .userId(byUser.get().getUserId())
+                .userPw(byUser.get().getUserPw())
+                .userPicture(byUser.get().getUserPicture())
+                .finger(byUser.get().getFinger()).build();
+
+        HashMap<String, Object>userMap = new HashMap<>();
+        for (Field field : UserDTO.class.getDeclaredFields()) {
+            field.setAccessible(true);
+            Object value = "";
+            try{
+                value = field.get(user);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            userMap.put(field.getName(), value);
+        }
+        json.put("status", "OK");
+        json.put("user", userMap);
+
+        userMap.entrySet().stream().forEach(System.out::println);
+
+        return json;
     }
 
 }

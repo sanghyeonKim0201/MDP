@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements tools {
     AlertDialog.Builder builder;
     String date;
     TextView reservationTxt;
+    TextView userTxt;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     @Override
@@ -53,7 +54,10 @@ public class MainActivity extends AppCompatActivity implements tools {
             Intent intent = new Intent(getApplicationContext(), ScheduleListActivity.class);
             startActivity(intent);
         });
-
+        userTxt.setOnClickListener(a->{
+            Intent intent = new Intent(getApplicationContext(), UserEditActivity.class);
+            startActivity(intent);
+        });
         chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -135,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements tools {
         reservationTxt = findViewById(R.id.scheduleMoveTxt);
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         editor = pref.edit();
+        userTxt = findViewById(R.id.userEditMoveTxt);
     }
     void loadAirPlane(){
         try {

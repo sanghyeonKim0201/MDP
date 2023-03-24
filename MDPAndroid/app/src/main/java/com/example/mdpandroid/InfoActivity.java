@@ -72,7 +72,7 @@ public class InfoActivity extends AppCompatActivity implements tools{
 
         try {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.encodeBitmap("http://localhost:8080/api/schedules?userNo=" + pref.getString("token", null), BarcodeFormat.QR_CODE, 200, 200);
+            Bitmap bitmap = barcodeEncoder.encodeBitmap("http://10.137.208.247:8080/api/schedules?userNo=" + pref.getString("userNo", null), BarcodeFormat.QR_CODE, 200, 200);
             ImageView image = findViewById(R.id.qrcode);
             image.setImageBitmap(bitmap);
         }catch (Exception e){

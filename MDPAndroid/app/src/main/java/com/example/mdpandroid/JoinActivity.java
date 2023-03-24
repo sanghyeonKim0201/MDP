@@ -38,7 +38,7 @@ public class JoinActivity extends AppCompatActivity implements tools {
                         builder.setTitle("경고").setMessage("아이디를 입력하세요");
                         return;
                     }
-                    String url = "http://10.137.208.247:8080/api/users/" +  txtBox[1].getText();
+                    String url = "http://10.137.208.247:8080/api/users?userId=" +  txtBox[1].getText();
                     Observable obs = jsonToServer(url, null, "GET", null);
                     obs.subscribe(r->{
                         if(r == "FAIL"){

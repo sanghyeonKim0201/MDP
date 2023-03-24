@@ -53,6 +53,7 @@ public class ScheduleController {
         json.put("list", scheduleList);
         return new ResponseEntity<>(json.toString(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/{scheduleNo}")
     public ResponseEntity<?> reservationInfo(@PathVariable("scheduleNo")String scheduleNo){
         System.out.println(scheduleNo);
