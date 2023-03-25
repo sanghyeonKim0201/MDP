@@ -41,7 +41,7 @@ public class JoinActivity extends AppCompatActivity implements tools {
                     String url = "http://10.137.208.247:8080/api/users?userId=" +  txtBox[1].getText();
                     Observable obs = jsonToServer(url, null, "GET", null);
                     obs.subscribe(r->{
-                        if(r == "FAIL"){
+                        if(r.equals("FAIL")){
                             builder.setTitle("경고").setMessage("이미 존재하는 아이디입니다");
                             builder.create().show();
                             check = false;
@@ -81,7 +81,6 @@ public class JoinActivity extends AppCompatActivity implements tools {
                     if(!txtBox[4].getText().toString().matches("\\d{4}-\\d{2}-\\d{2}")){
                         builder.setTitle("경고").setMessage("날짜 형식은 yyyy-MM-dd입니다").create().show();
                         return;
-
                     }
                     try {
                         if(LocalDate.parse(txtBox[4].getText()).toEpochDay() > LocalDate.now().toEpochDay()){

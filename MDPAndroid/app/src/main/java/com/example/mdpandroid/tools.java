@@ -26,15 +26,15 @@ public interface tools {
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
 
             con.setUseCaches(false);
-            con.setRequestProperty("Accept-Charset", "UTF-8");
-            con.setRequestProperty("Content-type", "application/json");
-            if(header != null){
+            con.setRequestProperty("Accept-Charset", "UTF-8"); //header 설정
+            con.setRequestProperty("Content-type", "application/json"); //header 설정
+            if(header != null){//토큰이 있는 경우 토큰 설정
                 con.setRequestProperty("Authorization", header);
             }
-            con.setRequestMethod(method);
+            con.setRequestMethod(method); //메소드 설정
             con.setDoInput(true);
 
-            if(jsonObject != null){
+            if(jsonObject != null){ //서버에 보낼 json이 있는 경우
                 con.setDoOutput(true);
                 String json = jsonObject.toString();
                 OutputStream os = con.getOutputStream();
@@ -56,7 +56,7 @@ public interface tools {
             rd.close();
             con.disconnect();
             return sb.toString();
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()); //서브 스레드에서 http통신을 하고 그 이후 메인 쓰레드에서 실행
     }
     default float size(int type, int value, DisplayMetrics display){
         return TypedValue.applyDimension(type, value, display);
