@@ -8,19 +8,28 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.kakao.sdk.auth.model.OAuthToken;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.User;
 
 import org.json.JSONObject;
 
 import io.reactivex.rxjava3.core.Observable;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 
 public class LoginActivity extends AppCompatActivity implements tools {
     EditText[] txtBox = new EditText[2];
     Button btn;
     TextView joinTxt;
     AlertDialog.Builder builder;
+    ImageView kakaoBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +39,24 @@ public class LoginActivity extends AppCompatActivity implements tools {
         actionBar.hide();
 
         data();
+
+        Log.d("getKeyHash", "" + getKeyHash(LoginActivity.this));
+
+        Function2<OAuthToken, Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
+            @Override
+            public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+                if (oAuthToken != null) {
+                    Log.i("user", oAuthToken.getAccessToken() + " " + oAuthToken.getRefreshToken());
+                }
+                if (throwable != null) {
+                    // TBD
+                    Log.w("error", "invoke: " + throwable.getLocalizedMessage());
+                }
+                updateKakaoLoginUi();
+
+                return null;
+            }
+        };
 
         joinTxt.setOnClickListener(a->{
             Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
@@ -77,13 +104,36 @@ public class LoginActivity extends AppCompatActivity implements tools {
                 });
              }
         });
+        kakaoBtn.setOnClickListener(a->{
 
+        });
+    }
+    void updateKakaoLoginUi(){
+        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+            @Override
+            public Unit invoke(User user, Throwable throwable) {
+                if (user != null) {
+                    // 유저 정보가 정상 전달 되었을 경우
+                    Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
+                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
+                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
+
+                    // 이 부분에는 로그인이 정상적으로 되었을 경우 어떤 일을 수행할 지 적으면 됩니다.
+                }
+                if (throwable != null) {
+                    // 로그인 시 오류 났을 때
+                    // 키해시가 등록 안 되어 있으면 오류 납니다.
+                    Log.w("error", "invoke: " + throwable.getLocalizedMessage());
+                }
+                return null;
+            }
+        });
     }
     void data(){
         for(int i = 0; i < txtBox.length; i++){
             txtBox[i] = findViewById(new int[]{R.id.idTxt, R.id.pwTxt}[i]);
         }
-
+        kakaoBtn = findViewById(R.id.kakaoBtn);
         btn = findViewById(R.id.loginButton);
         joinTxt = findViewById(R.id.joinTxt);
         builder = new AlertDialog.Builder(LoginActivity.this);

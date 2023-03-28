@@ -1,6 +1,11 @@
 package com.example.mdpandroid;
 
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
@@ -12,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -64,6 +70,27 @@ public interface tools {
     default float dp(int value, DisplayMetrics display){
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, display);
     }
+    default String getKeyHash(final Context context){
+        PackageManager pm = context.getPackageManager();
+        try{
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            if(packageInfo == null){
+                return null;
+            }
 
+            for(Signature signature  :packageInfo.signatures){
+                try{
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    return android.util.Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
