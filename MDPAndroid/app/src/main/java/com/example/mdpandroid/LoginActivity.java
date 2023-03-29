@@ -118,9 +118,9 @@ public class LoginActivity extends AppCompatActivity implements tools {
             public Unit invoke(User user, Throwable throwable) {
                 if (user != null) {
                     // 유저 정보가 정상 전달 되었을 경우
-                    Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
-                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
-                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
+//                    Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
+//                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
+//                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
 
                     // 이 부분에는 로그인이 정상적으로 되었을 경우 어떤 일을 수행할 지 적으면 됩니다.
                 }

@@ -9,7 +9,6 @@ export class UserDTO{
     userBirth?: String
     userName1?: String
     userName2?: String
-    userFinger?: String
 }
 export class CreateUserDTO{
     @IsString()
@@ -31,4 +30,7 @@ export class UpdateUserDTO extends PartialType(CreateUserDTO){
 export class UserLoginDTO{
     userId : String
     userPw : String
+}
+export class UserIdCheckDTO{
+    userId : String
 }
