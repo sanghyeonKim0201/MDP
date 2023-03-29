@@ -105,7 +105,11 @@ public class LoginActivity extends AppCompatActivity implements tools {
              }
         });
         kakaoBtn.setOnClickListener(a->{
-
+            if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(LoginActivity.this)){
+                UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, callback);
+            }else{
+                UserApiClient.getInstance().loginWithKakaoAccount(LoginActivity.this, callback);
+            }
         });
     }
     void updateKakaoLoginUi(){

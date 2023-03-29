@@ -47,8 +47,7 @@ public class UserService{
                 .userBirth(byUser.get().getUserBirth())
                 .userId(byUser.get().getUserId())
                 .userPw(byUser.get().getUserPw())
-                .userPicture(byUser.get().getUserPicture())
-                .finger(byUser.get().getFinger()).build();
+                .build();
 
         HashMap<String, Object>userMap = new HashMap<>();
         for (Field field : UserDTO.class.getDeclaredFields()) {
@@ -106,8 +105,7 @@ public class UserService{
                 .userBirth(byUser.get().getUserBirth())
                 .userId(byUser.get().getUserId())
                 .userPw(byUser.get().getUserPw())
-                .userPicture(byUser.get().getUserPicture())
-                .finger(byUser.get().getFinger()).build();
+                .build();
 
         HashMap<String, Object>userMap = new HashMap<>();
         for (Field field : UserDTO.class.getDeclaredFields()) {

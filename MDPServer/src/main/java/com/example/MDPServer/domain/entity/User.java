@@ -27,13 +27,9 @@ public class User{
     private LocalDate userBirth;
     @Column(name = "u_phone", nullable = false)
     private String userPhone;
-    @Column(name = "u_picture", columnDefinition = "LONGBLOB")
-    private Byte[] userPicture;
-    @Column(name = "u_finger", columnDefinition = "varchar(10000)")
-    private String finger;
 
     @Builder
-    public User(Long userNo, String userName1, String userName2, String userId, String userPw, LocalDate userBirth, String userPhone, Byte[] userPicture, String finger){
+    public User(Long userNo, String userName1, String userName2, String userId, String userPw, LocalDate userBirth, String userPhone){
         this.userNo = userNo;
         this.userName1 = userName1;
         this.userName2 = userName2;
@@ -41,8 +37,6 @@ public class User{
         this.userPw = userPw;
         this.userBirth = userBirth;
         this.userPhone = userPhone;
-        this.userPicture = userPicture;
-        this.finger = finger;
     }
 
 }
