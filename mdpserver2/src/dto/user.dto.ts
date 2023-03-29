@@ -3,34 +3,34 @@ import { IsString } from "class-validator"
 
 export class UserDTO{
     userNo?: number
-    userId?: String
-    userPw?: String
-    userPhone?: String
-    userBirth?: String
-    userName1?: String
-    userName2?: String
+    userId?: string
+    userPw?: string
+    userPhone?: string
+    userBirth?: string
+    userName1?: string
+    userName2?: string
 }
 export class CreateUserDTO{
     @IsString()
-    userId?: String
+    userId?: string
     @IsString()
-    userPw?: String
+    userPw?: string
     @IsString()
-    userPhone?: String
+    userPhone?: string
     @IsString()
-    userBirth?: String
+    userBirth?: string
     @IsString()
-    userName1?: String
+    userName1?: string
     @IsString()
-    userName2?: String
+    userName2?: string
 }
 export class UpdateUserDTO extends PartialType(CreateUserDTO){
     
 }
 export class UserLoginDTO{
-    userId : String
-    userPw : String
+    userId : string
+    userPw : string
 }
 export class UserIdCheckDTO{
-    userId : String
+    userId : string
 }

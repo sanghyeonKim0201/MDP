@@ -16,3 +16,5 @@ export const ormConfig : TypeOrmModuleOptions ={
     synchronize : true,
     logging : true
 }
+
+export const secretKey = "ASDWSADczxc123asd"

@@ -7,23 +7,23 @@ export class Schedule{
     @PrimaryGeneratedColumn({type : "int", name : "s_no"})
     scheduleNo : number
     @Column("varchar", {name : "s_airlineId"})
-    airlineId : String
+    airlineId : string
     @Column("varchar", {name : "s_airlineName"})
-    airlineName : String
+    airlineName : string
     @Column("varchar", {name : "s_arrAirportId"})
-    arrAirportId : String
+    arrAirportId : string
     @Column("varchar", {name : "s_arrAirportName"})
-    arrAirportName : String
+    arrAirportName : string
     @Column("varchar", {name : "s_arrPlandTime"})
-    arrPlandTime : String
+    arrPlandTime : string
     @Column("varchar", {name : "s_depAirportId"})
-    depAirportId : String
+    depAirportId : string
     @Column("varchar", {name : "s_depAirportName"})
-    depAirportName : String
+    depAirportName : string
     @Column("varchar", {name : "s_depPlandTime"})
-    depPlandTime : String
+    depPlandTime : string
     @Column("varchar", {name : "s_vihicleId"})
-    vihicleId : String
+    vihicleId : string
     @ManyToOne(()=>User,(user)=>user.userNo)
     @JoinColumn({name : "u_no"})
     userNo : User
