@@ -32,8 +32,7 @@ public class UserDTO implements UserDetails {
                 userPw(userPw).
                 userBirth(userBirth).
                 userPhone(userPhone).
-                userPicture(userPicture).
-                finger(finger).build();
+                build();
         return user;
     }
 

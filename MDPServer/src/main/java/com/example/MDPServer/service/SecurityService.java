@@ -78,9 +78,7 @@ public class SecurityService implements UserDetailsService {
                 userName1(byUser.get().getUserName1()).
                 userName2(byUser.get().getUserName2()).
                 userPhone(byUser.get().getUserPhone()).
-                userBirth(byUser.get().getUserBirth()).
-                userPicture(byUser.get().getUserPicture()).
-                finger(byUser.get().getFinger())
+                userBirth(byUser.get().getUserBirth())
                 .build();
     }
     public Long getUserNo(String token){

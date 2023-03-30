@@ -30,21 +30,21 @@ public class ScheduleController {
     @Autowired
     private SecurityService securityService;
 
-//    @PostMapping("/reservation")
-//    public ResponseEntity reservation(@RequestBody ScheduleDTO scheduleDTO, HttpServletRequest request){
-//        try {
-//            scheduleDTO.setUserNo(UserDTO.builder()
-//                    .userNo(securityService.getUserNo(securityService.resolveToken(request))).build().toEntity());
-//            var s = scheduleService.postSchedule(scheduleDTO);
-//            if(s.getString("status").equals("FAIL")){
-//                return new ResponseEntity(s.toString(), headers, HttpStatus.UNAUTHORIZED);
-//            }
-//            return new ResponseEntity(s.toString(), headers, HttpStatus.OK);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return new ResponseEntity(new JSONObject().put("status", "FAIL").toString(), headers, HttpStatus.UNAUTHORIZED);
-//        }
-//    }
+    @PostMapping("/reservation")
+    public ResponseEntity reservation(@RequestBody ScheduleDTO scheduleDTO, HttpServletRequest request){
+        try {
+            scheduleDTO.setUserNo(UserDTO.builder()
+                    .userNo(securityService.getUserNo(securityService.resolveToken(request))).build().toEntity());
+            var s = scheduleService.postSchedule(scheduleDTO);
+            if(s.getString("status").equals("FAIL")){
+                return new ResponseEntity(s.toString(), headers, HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity(s.toString(), headers, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity(new JSONObject().put("status", "FAIL").toString(), headers, HttpStatus.UNAUTHORIZED);
+        }
+    }
     @GetMapping
     public ResponseEntity<?> reservationList(@RequestParam("userNo")String userNo){
         System.out.println(userNo);
@@ -54,12 +54,12 @@ public class ScheduleController {
         return new ResponseEntity<>(json.toString(), headers, HttpStatus.OK);
     }
 
-//    @GetMapping("/{scheduleNo}")
-//    public ResponseEntity<?> reservationInfo(@PathVariable("scheduleNo")String scheduleNo){
-//        System.out.println(scheduleNo);
-//        var schedule = scheduleService.getSchedule(Long.parseLong(scheduleNo));
-//        return new ResponseEntity<>(schedule, headers, HttpStatus.OK);
-//    }
+    @GetMapping("/{scheduleNo}")
+    public ResponseEntity<?> reservationInfo(@PathVariable("scheduleNo")String scheduleNo){
+        System.out.println(scheduleNo);
+        var schedule = scheduleService.getSchedule(Long.parseLong(scheduleNo));
+        return new ResponseEntity<>(schedule, headers, HttpStatus.OK);
+    }
     @DeleteMapping("/{scheduleNo}")
     public ResponseEntity<?> reservationDelete(@PathVariable("scheduleNo")String scheduleNo){
         var data = scheduleService.deleteSchedule(Long.parseLong(scheduleNo));
