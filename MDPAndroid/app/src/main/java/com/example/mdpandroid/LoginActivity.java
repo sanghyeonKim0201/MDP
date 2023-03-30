@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kakao.sdk.auth.model.OAuthToken;
+import com.kakao.sdk.common.KakaoSdk;
+import com.kakao.sdk.user.UserApi;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
@@ -39,9 +41,10 @@ public class LoginActivity extends AppCompatActivity implements tools {
         actionBar.hide();
 
         data();
-
+        event();
         Log.d("getKeyHash", "" + getKeyHash(LoginActivity.this));
-
+    }
+    Function2 callBack(){
         Function2<OAuthToken, Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
             @Override
             public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
@@ -57,7 +60,39 @@ public class LoginActivity extends AppCompatActivity implements tools {
                 return null;
             }
         };
+        return callback;
+    }
+    void updateKakaoLoginUi(){
+        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+            @Override
+            public Unit invoke(User user, Throwable throwable) {
+                if (user != null) {
+                    // 유저 정보가 정상 전달 되었을 경우
+                    Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
+//                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
+//                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
 
+                    // 이 부분에는 로그인이 정상적으로 되었을 경우 어떤 일을 수행할 지 적으면 됩니다.
+                }
+                if (throwable != null) {
+                    // 로그인 시 오류 났을 때
+                    // 키해시가 등록 안 되어 있으면 오류 납니다.
+                    Log.w("error", "invoke: " + throwable.getLocalizedMessage());
+                }
+                return null;
+            }
+        });
+    }
+    void data(){
+        for(int i = 0; i < txtBox.length; i++){
+            txtBox[i] = findViewById(new int[]{R.id.idTxt, R.id.pwTxt}[i]);
+        }
+        kakaoBtn = findViewById(R.id.kakaoBtn);
+        btn = findViewById(R.id.loginButton);
+        joinTxt = findViewById(R.id.joinTxt);
+        builder = new AlertDialog.Builder(LoginActivity.this);
+    }
+    void event(){
         joinTxt.setOnClickListener(a->{
             Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
             startActivity(intent);
@@ -102,45 +137,15 @@ public class LoginActivity extends AppCompatActivity implements tools {
                         startActivity(intent);
                     }
                 });
-             }
+            }
         });
         kakaoBtn.setOnClickListener(a->{
             if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(LoginActivity.this)){
-                UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, callback);
+                UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, callBack());
             }else{
-                UserApiClient.getInstance().loginWithKakaoAccount(LoginActivity.this, callback);
+                UserApiClient.getInstance().loginWithKakaoAccount(LoginActivity.this, callBack());
             }
         });
-    }
-    void updateKakaoLoginUi(){
-        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
-            @Override
-            public Unit invoke(User user, Throwable throwable) {
-                if (user != null) {
-                    // 유저 정보가 정상 전달 되었을 경우
-//                    Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
-//                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
-//                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
-
-                    // 이 부분에는 로그인이 정상적으로 되었을 경우 어떤 일을 수행할 지 적으면 됩니다.
-                }
-                if (throwable != null) {
-                    // 로그인 시 오류 났을 때
-                    // 키해시가 등록 안 되어 있으면 오류 납니다.
-                    Log.w("error", "invoke: " + throwable.getLocalizedMessage());
-                }
-                return null;
-            }
-        });
-    }
-    void data(){
-        for(int i = 0; i < txtBox.length; i++){
-            txtBox[i] = findViewById(new int[]{R.id.idTxt, R.id.pwTxt}[i]);
-        }
-        kakaoBtn = findViewById(R.id.kakaoBtn);
-        btn = findViewById(R.id.loginButton);
-        joinTxt = findViewById(R.id.joinTxt);
-        builder = new AlertDialog.Builder(LoginActivity.this);
     }
 
 }

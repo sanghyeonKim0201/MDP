@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateUserDTO, UpdateUserDTO, UserLoginDTO } from 'src/dto/user.dto';
-import { LocalAuthGuard } from 'src/security/auth.guard';
 import { UserService } from 'src/service/user.service';
 
 @Controller('api/users')
@@ -44,7 +43,7 @@ export class UserController {
     }
 
     @Get(":userNo")
-    @UseGuards(LocalAuthGuard)
+    @UseGuards()
     async getUserInfo(@Param("userNo")userNo : string){
         const result = await this.userService.getUserInfo(userNo)
         throw new HttpException(Object.assign({
@@ -56,7 +55,7 @@ export class UserController {
         }), 200)
     }
     @Put(":userNo")
-    @UseGuards(LocalAuthGuard)
+    @UseGuards()
     async updateUser(@Param("userNo")userNo : string, @Body()updateUserDTO : UpdateUserDTO){
         const result = await this.userService.updateUser(userNo, updateUserDTO)
         throw new HttpException(Object.assign({
@@ -66,7 +65,7 @@ export class UserController {
         }), 200)
     }
     @Delete(":userNo")
-    @UseGuards(LocalAuthGuard)
+    @UseGuards()
     async deleteUser(@Param("userNo")userNo : string){
         const result = await this.userService.deleteUser(userNo)
         throw new HttpException(Object.assign({
