@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm"
 
 @Entity({ schema: "mdp", name: "users" })
+@Unique(["userId"])
 export class User extends BaseEntity{
     @PrimaryGeneratedColumn({ type: "int", name: "u_no" })
     userNo: number

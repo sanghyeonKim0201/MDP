@@ -54,10 +54,22 @@ export class UserService {
         return result
     }
     async updateUser(userNo : string, updateUserDTO : UpdateUserDTO){
+        if(!await this.userRepository.findByUserNo(userNo)){
+            throw new HttpException(Object.assign({
+                statusCode : 404,
+                message : `${userNo}번 회원은 없는 번호입니다`,
+                
+            }), 404)
+        }
         let result = await this.userRepository.updateUser(userNo, updateUserDTO)
-        
     }
     async deleteUser(userNo : string){
+        if(!await this.userRepository.findByUserNo(userNo)){
+            throw new HttpException(Object.assign({
+                statusCode : 404,
+                message : `${userNo}번 회원은 없는 번호입니다`,
+            }), 404)
+        }
         let result = await this.userRepository.deleteUser(userNo)
     }
     async tokenValidUser(payload : PayLoad) : Promise<User | undefined | null>{
