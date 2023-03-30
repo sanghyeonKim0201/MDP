@@ -2,7 +2,6 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDTO, UpdateUserDTO } from "src/dto/user.dto";
 import { DataSource, FindOneOptions, Repository } from "typeorm";
 import { User } from "../entity/user.entity";
-import * as bcrypt from "bcrypt"
 
 @Injectable()
 export class UserRepository extends Repository<User>{
@@ -31,8 +30,5 @@ export class UserRepository extends Repository<User>{
         await this.createQueryBuilder("users").delete().from(User).where("users.u_no = :userNo",{
             userNo : Number.parseInt(userNo)
         }).execute()
-    }
-    async transfomrPassword(str : string){
-        return await bcrypt.hash(str, 10)
     }
 }

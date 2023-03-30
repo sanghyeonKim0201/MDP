@@ -12,7 +12,7 @@ export class UserController {
 
     @Post("/login")
     async login(@Body() loginDTO : UserLoginDTO, @Res() res : Response){
-        const result = await this.userService.login(loginDTO)
+        const result = await this.userService.login(loginDTO.userId, loginDTO.userPw)
         res.setHeader("Authorization", result.token)
         res.status(200).json(Object.assign({
             statusCode : 200,

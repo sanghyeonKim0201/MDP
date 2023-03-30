@@ -5,23 +5,18 @@ import * as bcrypt from "bcrypt"
 import { PayLoad } from 'src/security/payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/domain/entity/user.entity';
+import { AuthRepository } from 'src/domain/repository/auth.repository';
 
 @Injectable()
 export class UserService {
-    constructor(private userRepository : UserRepository, private jwtService : JwtService){
+    constructor(private userRepository : UserRepository, private jwtService : JwtService, private authRepository : AuthRepository){
         this.userRepository = userRepository
         this.jwtService = jwtService
+        this.authRepository = authRepository
     }
     
-    async login(userLoginDTO : UserLoginDTO) : Promise<{token : string, } | undefined>{
-        const userFind = await this.userRepository.findByUserId(userLoginDTO.userId)
-        if(!userFind){
-            throw new UnauthorizedException()
-        }
-        const validatePassword = await bcrypt.compare(userLoginDTO.userPw, userFind.userPw)
-        if(!validatePassword){
-            throw new UnauthorizedException()
-        }
+    async login(userId : string, userPw : string) : Promise<{token : string, } | undefined>{
+        const userFind = await this.authRepository.getAuthenticatedUser(userId, userPw)
         const payLoad : PayLoad = {userNo : userFind.userNo, userId : userFind.userId}
         return {
             token : this.jwtService.sign(payLoad),
@@ -41,7 +36,7 @@ export class UserService {
         }
     }
     async createUser(createUserDTO : CreateUserDTO) : Promise<CreateUserDTO | undefined | null>{
-        createUserDTO.userPw = await this.userRepository.transfomrPassword(createUserDTO.userPw)
+        createUserDTO.userPw = await this.authRepository.transfomrPassword(createUserDTO.userPw)
         let result = await this.userIdCheck(createUserDTO.userId)
         if(!result){
             this.userRepository.save(createUserDTO)
