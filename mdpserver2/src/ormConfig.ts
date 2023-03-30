@@ -1,12 +1,12 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { join } from "path";
+import {ConfigModule} from "@nestjs/config"
 import { Fingers } from "./domain/entity/fingers.entity";
 import { Picture } from "./domain/entity/picture.entity";
 import { Schedule } from "./domain/entity/Schedule.entity";
 import { User } from "./domain/entity/user.entity";
 
 export const ormConfig : TypeOrmModuleOptions ={
-    type : "mysql",
+    type : process.env.DATABASE_TYPE,
     host : "localhost",
     port : 3306,
     username : "root",
