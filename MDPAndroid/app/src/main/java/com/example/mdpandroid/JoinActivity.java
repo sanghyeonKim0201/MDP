@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -106,7 +108,24 @@ public class JoinActivity extends AppCompatActivity implements tools {
                         builder.setTitle("경고").setMessage("영어 이름 칸은 알파벳만 사용 가능 합니다").create().show();
                         return;
                     }
-
+                    String url = pref.getString("ip", null) + "/api/users/join";
+                    JSONObject json = new JSONObject();
+                    for(int i = 0; i < txtBox.length; i++){
+                        if(i == 3)continue;
+                        try{
+                            json.put("userName1,userId,userPw,,userBirth,userPhone,userName2".split(",")[i], txtBox[i].getText());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    Observable obs = jsonToServer(url, json, "POST", null);
+                    obs.subscribe(e->{
+                       if(e.equals("FAIL")){
+                           builder.setTitle("경고").setMessage("회원가입에 실패하였습니다").create().show();
+                           return;
+                       }
+                        builder.setTitle("정보").setMessage("회원가입이 완료되었습니다").create().show();
+                    });
                 }
             });
         }

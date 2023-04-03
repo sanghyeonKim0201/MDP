@@ -45,6 +45,7 @@ public class ScheduleListActivity extends AppCompatActivity implements tools{
         obs.subscribe(a->{
 
             if(a.equals("FAIL")){
+                builder.setTitle("경고").setMessage("정보를 불러오는데 실패하였습니다").create().show();
                 return;
             }
 

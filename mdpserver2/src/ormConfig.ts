@@ -12,7 +12,7 @@ export const ormConfig : TypeOrmModuleOptions ={
     password : "1234",
     database : "mdp",
     entities : [User, Picture, Schedule, Fingers],
-    synchronize : true,
+    synchronize : false,
     logging : true
 }
 

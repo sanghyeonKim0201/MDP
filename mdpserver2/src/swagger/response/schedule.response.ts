@@ -5,5 +5,5 @@ export class reservationListResponseData{
     @ApiProperty({
         isArray : true
     })
-    item : ScheduleDTO[]
+    list : ScheduleDTO[]
 }

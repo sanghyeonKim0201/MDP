@@ -61,7 +61,7 @@ export class ScheduleController{
     async reservationList(@Query("userNo")userNo : string){
         const result = await this.scheduleService.getScheduleList(userNo)
         throw new HttpException(Object.assign({
-            item : result
+            list : result
         }),200)
     }
     @Get(":scheduleNo")

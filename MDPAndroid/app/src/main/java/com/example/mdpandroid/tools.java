@@ -35,7 +35,7 @@ public interface tools {
             con.setRequestProperty("Accept-Charset", "UTF-8"); //header 설정
             con.setRequestProperty("Content-type", "application/json"); //header 설정
             if(header != null){//토큰이 있는 경우 토큰 설정
-                con.setRequestProperty("Authorization", header);
+                con.setRequestProperty("Authorization", "Bearer "+header);
             }
             con.setRequestMethod(method); //메소드 설정
             con.setDoInput(true);

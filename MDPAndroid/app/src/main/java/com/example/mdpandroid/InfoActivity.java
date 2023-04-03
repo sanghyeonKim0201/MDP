@@ -78,7 +78,7 @@ public class InfoActivity extends AppCompatActivity implements tools{
         try {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             //회원 인증을 위한 회원정보를 담고 있는 QR코드 생성
-            Bitmap bitmap = barcodeEncoder.encodeBitmap("http://10.137.208.247:8080/api/schedules?userNo=" + pref.getString("userNo", null), BarcodeFormat.QR_CODE, 200, 200);
+            Bitmap bitmap = barcodeEncoder.encodeBitmap(pref.getString("ip", null) +  "/api/users/" + pref.getString("userNo", null), BarcodeFormat.QR_CODE, 200, 200);
             ImageView image = findViewById(R.id.qrcode);
             image.setImageBitmap(bitmap);
         }catch (Exception e){
@@ -87,7 +87,7 @@ public class InfoActivity extends AppCompatActivity implements tools{
     }
     void event(){
         infoBtn.setOnClickListener(a->{
-            String url = "http://10.137.208.247:8080/api/schedules/" + scheduleNo;
+            String url = pref.getString("ip", null) + "/api/schedules/" + scheduleNo;
             SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 
             Observable obs = jsonToServer(url, null, "DELETE", pref.getString("token", null));

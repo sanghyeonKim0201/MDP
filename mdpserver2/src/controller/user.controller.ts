@@ -87,8 +87,6 @@ export class UserController {
     }
 
     @Get(":userNo")
-    @UseGuards(AuthGuard())
-    @ApiBearerAuth()
     @ApiOperation({
         summary : "userInfoAPI",
         description : "유저정보를 불러오는 API"

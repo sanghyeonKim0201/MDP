@@ -162,7 +162,11 @@ public class ListActivity extends AppCompatActivity implements tools {
                                 String url = pref.getString("ip", null) + "/api/schedules/reservation";
                                 Observable obs = jsonToServer(url, json, "POST", pref.getString("token", null));
                                 obs.subscribe(e->{
-                                    Log.i("status", "success");
+                                    if(e.equals("FAIL")){
+                                        builder.setTitle("경고").setMessage("항공권 예약에 실패하였습니다").create().show();
+                                        return;
+                                    }
+                                    builder.setTitle("정보").setMessage("항공권 예약에 성공하였습니다").create().show();
                                 });
                             });
                         }catch (Exception e){

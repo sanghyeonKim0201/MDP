@@ -96,6 +96,7 @@ public class LoginActivity extends AppCompatActivity implements tools {
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
         editor.putString("ip", "http://10.137.208.247:8080");
+        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
     }
     void event(){
         joinTxt.setOnClickListener(a->{
@@ -129,7 +130,6 @@ public class LoginActivity extends AppCompatActivity implements tools {
                         String token = new JSONObject(r.toString()).getString("token");
 
                         editor.putString("token", token);
-                        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
                         JSONObject user = new JSONObject(r.toString()).getJSONObject("user");
 
                         editor.putString("userNo", user.getString("userNo"));
