@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +24,8 @@ public class ScheduleListActivity extends AppCompatActivity implements tools{
     AlertDialog.Builder builder;
     LinearLayout scrollFrame;
     TextView infoCount;
-
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ public class ScheduleListActivity extends AppCompatActivity implements tools{
 
         data();
 
-        String url = "http://10.137.208.247:8080/api/schedules?userNo=" + pref.getString("userNo", null);
+        String url = pref.getString("ip", null) + "/api/schedules?userNo=" + pref.getString("userNo", null);
         System.out.println(pref.getString("userNo", null) + ", " + pref.getString("token", null));
         Observable obs = jsonToServer(url, null, "GET", pref.getString("token", null));
         obs.subscribe(a->{
@@ -71,6 +73,8 @@ public class ScheduleListActivity extends AppCompatActivity implements tools{
         infoCount = findViewById(R.id.infoCount);
         scrollFrame = findViewById(R.id.scrollFrame);
         builder = new AlertDialog.Builder(ScheduleListActivity.this);
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
     }
     class Panel extends LinearLayout implements tools{
         String scheduleNo;

@@ -18,10 +18,12 @@ export class UserService {
     async login(userId : string, userPw : string) : Promise<{token : string, } | undefined>{
         const userFind = await this.authRepository.getAuthenticatedUser(userId, userPw)
         const payLoad : PayLoad = {userNo : userFind.userNo, userId : userFind.userId}
-        return {
+        return Object.assign({
             token : this.jwtService.sign(payLoad),
-            ...userFind
-        }
+            user : {
+                ...userFind
+            }
+        })
     }
 
     async userIdCheck(userId : String) : Promise<UserDTO | undefined | null>{
@@ -42,14 +44,21 @@ export class UserService {
             this.userRepository.save(createUserDTO)
             return createUserDTO 
         }else{
-            throw new UnauthorizedException()
+            throw new HttpException(Object.assign({
+                statusCode : 400,
+                message : "회원가입에 실패하였습니다"
+            }), 400)
         }
         
     }
     async getUserInfo(userNo : string) : Promise<UserDTO | undefined | null>{
         let result = await this.userRepository.findByUserNo(userNo)
         if(!result){
-            throw new UnauthorizedException()
+            throw new HttpException(Object.assign({
+                statusCode : 404,
+                message : `${userNo}번 회원은 없는 번호입니다`,
+                
+            }), 404)
         }
         return result
     }

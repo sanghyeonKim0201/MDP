@@ -7,7 +7,7 @@ export class Picture{
     pictureNo : number
     @Column("longblob",{name : "p_picture"})
     picture : string[]
-    @ManyToOne(()=>User, (user)=>user.userNo)
+    @ManyToOne(()=>User, (user)=>user.userNo, {cascade : true, eager : true})
     @JoinColumn({name : "u_no"})
     userNo : User
 }

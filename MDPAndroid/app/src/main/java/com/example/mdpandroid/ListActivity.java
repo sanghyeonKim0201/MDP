@@ -159,7 +159,7 @@ public class ListActivity extends AppCompatActivity implements tools {
                                 json.put("vihicleId", vihicleId);
                                 json.put("airlineId", airLine.entrySet().stream().filter(e->e.getValue().toString().indexOf(airlineNm) != -1).map(e->e.getKey().toString()).findAny().get().toString());
                                 System.out.println(json.getString("airlineId"));
-                                String url = "http://10.137.208.247:8080/api/schedules/reservation";
+                                String url = pref.getString("ip", null) + "/api/schedules/reservation";
                                 Observable obs = jsonToServer(url, json, "POST", pref.getString("token", null));
                                 obs.subscribe(e->{
                                     Log.i("status", "success");

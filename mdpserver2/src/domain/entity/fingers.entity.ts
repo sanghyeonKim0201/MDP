@@ -7,7 +7,7 @@ export class Fingers{
     fingerNo : number
     @Column("int", {name : "f_finger"})
     finger : string
-    @ManyToOne(()=>User,(user)=>user.userNo)
+    @ManyToOne(()=>User,(user)=>user.userNo, {cascade : true, eager : true})
     @JoinColumn({name : "u_no"})
     userNo : User
 }

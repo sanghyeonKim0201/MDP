@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,8 @@ public class JoinActivity extends AppCompatActivity implements tools {
     AlertDialog.Builder builder;
     LinearLayout infoPages[] = new LinearLayout[2];
     Boolean check = false;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +33,11 @@ public class JoinActivity extends AppCompatActivity implements tools {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         data();
-
+        event();
         infoPages[1].setVisibility(View.GONE);
+
+    }
+    void event(){
         for(Button b : btn){
             b.setOnClickListener(a->{
                 if(a.getId() == R.id.checkBtn){
@@ -38,7 +45,7 @@ public class JoinActivity extends AppCompatActivity implements tools {
                         builder.setTitle("경고").setMessage("아이디를 입력하세요");
                         return;
                     }
-                    String url = "http://10.137.208.247:8080/api/users?userId=" +  txtBox[1].getText();
+                    String url = pref.getString("ip", null) + "/api/users?userId=" +  txtBox[1].getText();
                     Observable obs = jsonToServer(url, null, "GET", null);
                     obs.subscribe(r->{
                         if(r.equals("FAIL")){
@@ -116,5 +123,7 @@ public class JoinActivity extends AppCompatActivity implements tools {
         for(int i = 0; i < infoPages.length; i++){
             infoPages[i] = findViewById(new int[]{R.id.infoPage1, R.id.infoPage2}[i]);
         }
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
     }
 }

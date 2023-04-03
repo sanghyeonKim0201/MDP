@@ -32,6 +32,8 @@ public class LoginActivity extends AppCompatActivity implements tools {
     TextView joinTxt;
     AlertDialog.Builder builder;
     ImageView kakaoBtn;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,9 @@ public class LoginActivity extends AppCompatActivity implements tools {
         btn = findViewById(R.id.loginButton);
         joinTxt = findViewById(R.id.joinTxt);
         builder = new AlertDialog.Builder(LoginActivity.this);
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.putString("ip", "http://10.137.208.247:8080");
     }
     void event(){
         joinTxt.setOnClickListener(a->{
@@ -106,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements tools {
                         return;
                     }
                 }
-                String url = "http://10.137.208.247:8080/api/users/login";
+                String url = pref.getString("ip", null) + "/api/users/login";
                 JSONObject json = new JSONObject();
                 try {
                     for(int i = 0; i < txtBox.length; i++){
@@ -122,9 +127,6 @@ public class LoginActivity extends AppCompatActivity implements tools {
                         return;
                     }else{
                         String token = new JSONObject(r.toString()).getString("token");
-
-                        SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pref.edit();
 
                         editor.putString("token", token);
                         editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");

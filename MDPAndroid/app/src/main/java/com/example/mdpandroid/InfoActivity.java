@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -29,6 +30,8 @@ public class InfoActivity extends AppCompatActivity implements tools{
     String scheduleNo;
     AlertDialog.Builder builder;
     Button infoBtn;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,9 @@ public class InfoActivity extends AppCompatActivity implements tools{
         for(int i = 0; i < txt.length; i++){
             txt[i] = findViewById(new int[]{R.id.depAirportName, R.id.depAirportId, R.id.arrAirportName, R.id.arrAirportId, R.id.depTime, R.id.airlineName, R.id.vihicleId, R.id.arrTime}[i]);
         }
-        String url = "http://10.137.208.247:8080/api/schedules/" + scheduleNo;
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
+        String url = pref.getString("ip", null) + "/api/schedules/" + scheduleNo;
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 
         Observable obs = jsonToServer(url, null, "GET", pref.getString("token", null));

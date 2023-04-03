@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy){
         if(!user){
             throw new HttpException(Object.assign({
                 statusCode : 401,
-                message : "유저를 찾을 수 없습니다"
+                message : "인증을 하여 주십시오"
             }), 401)
         }
         return user;

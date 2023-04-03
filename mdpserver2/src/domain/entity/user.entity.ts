@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique } from "type
 @Entity({ schema: "mdp", name: "users" })
 @Unique(["userId"])
 export class User extends BaseEntity{
-    @PrimaryGeneratedColumn({ type: "int", name: "u_no" })
+    @PrimaryGeneratedColumn({ type: "int", name: "u_no"})
     userNo: number
     @Column("varchar", { name: "u_id" })
     userId: string
