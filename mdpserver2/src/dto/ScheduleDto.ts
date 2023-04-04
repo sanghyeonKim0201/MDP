@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsNumber, IsString, isString } from "class-validator"
-import { User } from "src/domain/entity/user.entity"
+import { IsNumber, IsString } from "class-validator"
+import { UserDTO } from "./UserDto"
 
 export class ScheduleDTO {
     @IsNumber()
@@ -68,7 +68,7 @@ export class ScheduleDTO {
         example : 1,
         description : "예약한 유저"
     })
-    userNo : User
+    userNo : UserDTO
 }
 
 export class CreateScheduleDTO{
@@ -126,5 +126,5 @@ export class CreateScheduleDTO{
         description : "항공편명"
     })
     vihicleId : string
-    userNo : User
+    userNo : UserDTO
 }

@@ -1,11 +1,9 @@
 import { HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from 'src/domain/repository/user.repository';
-import { CreateUserDTO, UpdateUserDTO, UserDTO, UserIdCheckDTO, UserLoginDTO } from 'src/dto/user.dto';
-import * as bcrypt from "bcrypt"
-import { PayLoad } from 'src/security/payload.interface';
+import { UserRepository } from 'src/domain/repository/UserRepository';
+import { CreateUserDTO, UpdateUserDTO, UserDTO, UserIdCheckDTO, UserLoginDTO } from 'src/dto/UserDto';
+import { UserPayLoad } from 'src/security/PayloadInterface';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/domain/entity/user.entity';
-import { AuthRepository } from 'src/domain/repository/auth.repository';
+import { AuthRepository } from 'src/domain/repository/AuthRepository';
 
 @Injectable()
 export class UserService {
@@ -17,7 +15,7 @@ export class UserService {
     
     async login(userId : string, userPw : string) : Promise<{token : string, } | undefined>{
         const userFind = await this.authRepository.getAuthenticatedUser(userId, userPw)
-        const payLoad : PayLoad = {userNo : userFind.userNo, userId : userFind.userId}
+        const payLoad : UserPayLoad = {userNo : userFind.userNo, userId : userFind.userId}
         return Object.assign({
             token : this.jwtService.sign(payLoad),
             user : {
@@ -81,7 +79,7 @@ export class UserService {
         }
         let result = await this.userRepository.deleteUser(userNo)
     }
-    async tokenValidUser(payload : PayLoad) : Promise<User | undefined | null>{
+    async tokenValidUser(payload : UserPayLoad) : Promise<UserDTO | undefined | null>{
         return await this.userRepository.findByUserNo(payload.userId)
     }
 }

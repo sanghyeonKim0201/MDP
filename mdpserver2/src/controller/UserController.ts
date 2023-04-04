@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Res} from '@nestjs/common';
-import { CreateUserDTO, UpdateUserDTO, UserDTO, UserLoginDTO } from 'src/dto/user.dto';
-import { UserService } from 'src/service/user.service';
+import { CreateUserDTO, UpdateUserDTO, UserDTO, UserLoginDTO } from 'src/dto/UserDto';
+import { UserService } from 'src/service/UserService';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { FailResponseData, LoginResponseData, SuccessResponseData } from 'src/swagger/response/user.response';
+import { FailResponseData, LoginResponseData, SuccessResponseData } from 'src/swagger/response/UserResponse';
 
 @ApiTags("users")
 @Controller('api/users')
@@ -31,7 +31,6 @@ export class UserController {
         type : FailResponseData
     })
     async login(@Body() loginDTO : UserLoginDTO){
-        
         const result = await this.userService.login(loginDTO.userId, loginDTO.userPw)
         throw new HttpException(Object.assign({
             ...result

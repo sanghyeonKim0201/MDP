@@ -15,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kakao.sdk.auth.model.OAuthToken;
-import com.kakao.sdk.common.KakaoSdk;
-import com.kakao.sdk.user.UserApi;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
@@ -71,10 +69,13 @@ public class LoginActivity extends AppCompatActivity implements tools {
                 if (user != null) {
                     // 유저 정보가 정상 전달 되었을 경우
                     Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
+
 //                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
 //                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
 
                     // 이 부분에는 로그인이 정상적으로 되었을 경우 어떤 일을 수행할 지 적으면 됩니다.
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
                 if (throwable != null) {
                     // 로그인 시 오류 났을 때
@@ -95,8 +96,11 @@ public class LoginActivity extends AppCompatActivity implements tools {
         builder = new AlertDialog.Builder(LoginActivity.this);
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
+        editor.clear();
+        editor.apply();
         editor.putString("ip", "http://10.137.208.247:8080");
         editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
+        editor.apply();
     }
     void event(){
         joinTxt.setOnClickListener(a->{

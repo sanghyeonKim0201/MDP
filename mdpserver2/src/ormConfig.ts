@@ -1,8 +1,9 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { Fingers } from "./domain/entity/fingers.entity";
-import { Picture } from "./domain/entity/picture.entity";
-import { Schedule } from "./domain/entity/Schedule.entity";
-import { User } from "./domain/entity/user.entity";
+import { Fingers } from "./domain/entity/FingersEntity";
+import { Kakao } from "./domain/entity/KakaoEntity";
+import { Picture } from "./domain/entity/PictureEntity";
+import { Schedule } from "./domain/entity/ScheduleEntity";
+import { User } from "./domain/entity/UserEntity";
 
 export const ormConfig : TypeOrmModuleOptions ={
     type : "mysql",
@@ -11,8 +12,8 @@ export const ormConfig : TypeOrmModuleOptions ={
     username : "root",
     password : "1234",
     database : "mdp",
-    entities : [User, Picture, Schedule, Fingers],
-    synchronize : false,
+    entities : [User, Picture, Schedule, Fingers, Kakao],
+    synchronize : true,
     logging : true
 }
 

@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserController } from 'src/controller/user.controller';
-import { User } from 'src/domain/entity/user.entity';
-import { AuthRepository } from 'src/domain/repository/auth.repository';
-import { UserRepository } from 'src/domain/repository/user.repository';
+import { UserController } from 'src/controller/UserController';
+import { User } from 'src/domain/entity/UserEntity';
+import { AuthRepository } from 'src/domain/repository/AuthRepository';
+import { UserRepository } from 'src/domain/repository/UserRepository';
 import { secretKey } from 'src/ormConfig';
-import { JwtStrategy } from 'src/security/jwt.strategy';
-import { UserService } from 'src/service/user.service';
+import { JwtStrategy } from 'src/security/JwtStrategy';
+import { UserService } from 'src/service/UserService';
 
 @Module({
     imports : [TypeOrmModule.forFeature([User]), JwtModule.register({

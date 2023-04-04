@@ -2,11 +2,11 @@ import { Body, Controller, Delete, Get, HttpException, Param, Post, Query, UseGu
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { GetUesr } from "src/Decorator";
-import { User } from "src/domain/entity/user.entity";
-import { CreateScheduleDTO, ScheduleDTO } from "src/dto/schedule.dto";
-import { ScheduleService } from "src/service/schedule.service";
-import { reservationListResponseData } from "src/swagger/response/schedule.response";
-import { FailResponseData, SuccessResponseData } from "src/swagger/response/user.response";
+import { User } from "src/domain/entity/UserEntity";
+import { CreateScheduleDTO, ScheduleDTO } from "src/dto/ScheduleDto";
+import { ScheduleService } from "src/service/ScheduleService";
+import { reservationListResponseData } from "src/swagger/response/ScheduleResponse";
+import { FailResponseData, SuccessResponseData } from "src/swagger/response/UserResponse";
 
 @ApiTags("schedules")
 @Controller("api/schedules")

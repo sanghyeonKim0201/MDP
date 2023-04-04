@@ -1,8 +1,7 @@
-import { HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import * as bcrypt from "bcrypt"
-import { resolve } from "path";
-import { User } from "../entity/user.entity";
-import { UserRepository } from "./user.repository";
+import { User } from "../entity/UserEntity";
+import { UserRepository } from "./UserRepository";
 @Injectable()
 export class AuthRepository{
     constructor(private userRepository : UserRepository){

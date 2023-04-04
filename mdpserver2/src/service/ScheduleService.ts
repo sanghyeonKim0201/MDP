@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from "@nestjs/common";
-import { Schedule } from "src/domain/entity/Schedule.entity";
-import { ScheduleRepository } from "src/domain/repository/schedule.repository";
-import { CreateScheduleDTO } from "src/dto/schedule.dto";
+import { ScheduleRepository } from "src/domain/repository/ScheduleRepository";
+import { CreateScheduleDTO, ScheduleDTO } from "src/dto/ScheduleDto";
 
 @Injectable()
 export class ScheduleService{
@@ -9,7 +8,7 @@ export class ScheduleService{
         this.scheduleRepository = scheduleRepository
     }
 
-    async getScheduleList(userNo : string) : Promise<Schedule[] | undefined | null>{
+    async getScheduleList(userNo : string) : Promise<ScheduleDTO[] | undefined | null>{
         const result = await this.scheduleRepository.findListByUserNo(userNo)
         if(result.length <= 0){
             throw new HttpException(Object.assign({
@@ -34,7 +33,7 @@ export class ScheduleService{
         await this.scheduleRepository.delete(scheduleNo)
         return Promise.resolve()
     }
-    async getSchedule(schedule : string) : Promise<Schedule>{
+    async getSchedule(schedule : string) : Promise<ScheduleDTO>{
         const find = await this.scheduleRepository.findByScheduleNo(schedule)
         if(!find){
             throw new HttpException(Object.assign({

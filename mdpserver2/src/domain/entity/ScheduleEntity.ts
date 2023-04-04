@@ -1,6 +1,6 @@
 
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "./user.entity";
+import { User } from "./UserEntity";
 
 @Entity("schedules")
 export class Schedule {

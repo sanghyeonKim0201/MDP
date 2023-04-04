@@ -1,7 +1,7 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { CreateUserDTO, UpdateUserDTO } from "src/dto/user.dto";
-import { DataSource, FindOneOptions, Repository } from "typeorm";
-import { User } from "../entity/user.entity";
+import {  Injectable } from "@nestjs/common";
+import {  UpdateUserDTO } from "src/dto/UserDto";
+import { DataSource, Repository } from "typeorm";
+import { User } from "../entity/UserEntity";
 
 @Injectable()
 export class UserRepository extends Repository<User>{
