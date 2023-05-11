@@ -65,6 +65,12 @@ export class ScheduleDTO {
     vihicleId : string
     @IsString()
     @ApiProperty({
+        example: "A1",
+        description : "좌석"
+    })
+    seat : string
+    @IsString()
+    @ApiProperty({
         example : 1,
         description : "예약한 유저"
     })
@@ -126,5 +132,19 @@ export class CreateScheduleDTO{
         description : "항공편명"
     })
     vihicleId : string
+    @IsString()
+    @ApiProperty({
+        example: "A1",
+        description : "좌석"
+    })
+    seat : string
     userNo : UserDTO
+}
+export class SeatDTO{
+    @IsString()
+    @ApiProperty({
+        example: "A1",
+        description : "좌석"
+    })
+    seat : string
 }

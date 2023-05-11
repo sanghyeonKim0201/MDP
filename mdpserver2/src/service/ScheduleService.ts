@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
+import { find } from "rxjs";
 import { ScheduleRepository } from "src/domain/repository/ScheduleRepository";
-import { CreateScheduleDTO, ScheduleDTO } from "src/dto/ScheduleDto";
+import { CreateScheduleDTO, ScheduleDTO, SeatDTO } from "src/dto/ScheduleDto";
 
 @Injectable()
 export class ScheduleService{
@@ -43,5 +44,16 @@ export class ScheduleService{
         }
 
         return find
+    }
+    
+    async getSeat(vihicleId : string) : Promise<ScheduleDTO[] | undefined | null>{
+        const result = await this.scheduleRepository.findByVihideId(vihicleId)
+        if(!find){
+            throw new HttpException(Object.assign({
+                statusCode : 404,
+                message : "스케줄에 대한 정보가 없습니다"
+            }), 404)
+        }
+        return result
     }
 }

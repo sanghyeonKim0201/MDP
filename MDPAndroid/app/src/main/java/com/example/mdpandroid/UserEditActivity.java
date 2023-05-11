@@ -164,6 +164,7 @@ public class UserEditActivity extends AppCompatActivity implements tools {
                             return;
                         }
                         builder.setTitle("정보").setMessage("정보수정이 완료되었습니다").create().show();
+                        finish();
                     });
                 }
             });

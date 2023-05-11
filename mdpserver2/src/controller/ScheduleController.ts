@@ -42,6 +42,7 @@ export class ScheduleController{
             message : "에약이 완료되었습니다",
         }),200)
     }
+    
     @Get()
     @ApiBearerAuth()
     @ApiOperation({
@@ -64,6 +65,16 @@ export class ScheduleController{
             list : result
         }),200)
     }
+    
+    @Get("vihicleid/:vihicleid")
+    @ApiBearerAuth()
+    async reservationSeat(@Param("vihicleid")vihicleid : string){
+        const result = await this.scheduleService.getSeat(vihicleid)
+        throw new HttpException(Object.assign({
+            list : result
+        }), 200)
+    }
+    
     @Get(":scheduleNo")
     @ApiBearerAuth()
     @ApiOperation({
@@ -109,4 +120,5 @@ export class ScheduleController{
             message : "삭제가 완료되었습니다",
         }),200)
     }
+    
 }

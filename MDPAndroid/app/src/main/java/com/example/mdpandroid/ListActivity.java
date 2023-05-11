@@ -167,6 +167,7 @@ public class ListActivity extends AppCompatActivity implements tools {
                                         return;
                                     }
                                     builder.setTitle("정보").setMessage("항공권 예약에 성공하였습니다").create().show();
+                                    finish();
                                 });
                             });
                         }catch (Exception e){

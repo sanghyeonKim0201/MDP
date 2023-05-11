@@ -1,8 +1,11 @@
 package com.example.mdpandroid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -11,10 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.time.LocalDate;
+import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -55,6 +60,8 @@ public class JoinActivity extends AppCompatActivity implements tools {
                             builder.create().show();
                             check = false;
                             return;
+                        }else{
+                            builder.setTitle("정보").setMessage("사용가능한 아이디 입니다").create().show();
                         }
                         check = true;
                     });
@@ -118,13 +125,52 @@ public class JoinActivity extends AppCompatActivity implements tools {
                             e.printStackTrace();
                         }
                     }
+
+                    Executor executor = ContextCompat.getMainExecutor(this);
+                    BiometricPrompt biometricPrompt = new BiometricPrompt(this,
+                            executor, new BiometricPrompt.AuthenticationCallback() {
+                        @Override
+                        public void onAuthenticationError(int errorCode,
+                                                          @NonNull CharSequence errString) {
+                            super.onAuthenticationError(errorCode, errString);
+                            Toast.makeText(getApplicationContext(),
+                                            "실패", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        @Override
+                        public void onAuthenticationSucceeded(
+                                @NonNull BiometricPrompt.AuthenticationResult result) {
+                            super.onAuthenticationSucceeded(result);
+                            Toast.makeText(getApplicationContext(),
+                                    "성공", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onAuthenticationFailed() {
+                            super.onAuthenticationFailed();
+                            Toast.makeText(getApplicationContext(), "실패",
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+                     BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                            .setTitle("지문 인증")
+                            .setSubtitle("기기에 등록된 지문을 이용하여 지문을 인증해주세요.")
+                            .setNegativeButtonText("취소")
+                            .setDeviceCredentialAllowed(false)
+                            .build();
+                    biometricPrompt.authenticate(promptInfo);
+
                     Observable obs = jsonToServer(url, json, "POST", null);
                     obs.subscribe(e->{
                        if(e.equals("FAIL")){
                            builder.setTitle("경고").setMessage("회원가입에 실패하였습니다").create().show();
                            return;
                        }
-                        builder.setTitle("정보").setMessage("회원가입이 완료되었습니다").create().show();
+                       builder.setTitle("정보").setMessage("회원가입이 완료되었습니다").create().show();
+                       finish();
                     });
                 }
             });

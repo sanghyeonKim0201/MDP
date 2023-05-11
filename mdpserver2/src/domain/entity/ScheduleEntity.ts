@@ -24,6 +24,8 @@ export class Schedule {
     depPlandTime: string
     @Column("varchar", { name: "s_vihicleId" })
     vihicleId: string
+    @Column("varchar", {name : "s_seat"})
+    seat : string
     @ManyToOne(() => User, (user) => user.userNo, {
         eager: true,
         cascade: true,

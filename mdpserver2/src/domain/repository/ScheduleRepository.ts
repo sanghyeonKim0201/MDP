@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { SeatDTO } from "src/dto/ScheduleDto";
 import { DataSource, Repository } from "typeorm";
 import { Schedule } from "../entity/ScheduleEntity";
 
@@ -18,7 +19,13 @@ export class ScheduleRepository extends Repository<Schedule>{
             .where("schedules.s_no = :scheduleNo", {scheduleNo : Number.parseInt(scheduleNo)})
             .getOne()
 
-        console.log(result)
+        return result
+    }
+    async findByVihideId(vihicleId : string) : Promise<Schedule[]>{
+        const result = await this.createQueryBuilder("schedules")
+        .select("schedules.seat")
+        .where("schedules.s_vihicleId = :vihicleId", {vihicleId : vihicleId})
+        .getMany()
         return result
     }
 }

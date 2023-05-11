@@ -66,7 +66,6 @@ public class InfoActivity extends AppCompatActivity implements tools{
            for(int i = 0; i < txt.length; i++){
                txt[i].setText(json.getString("depAirportName,depAirportId,arrAirportName,arrAirportId,depPlandTime,airlineName,vihicleId,arrPlandTime".split(",")[i]));
            }
-           System.out.println("time : " + json.get("arrPlandTime"));
            LocalDateTime date = LocalDateTime.parse(json.getString("arrPlandTime"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
            if(LocalDate.now().toEpochDay() > LocalDate.parse(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).toEpochDay()){
                 infoBtn.setText("DELETE");
@@ -92,14 +91,12 @@ public class InfoActivity extends AppCompatActivity implements tools{
 
             Observable obs = jsonToServer(url, null, "DELETE", pref.getString("token", null));
             obs.subscribe(e->{
-                System.out.println("ASdasdasd");
                 if(e.equals("FAIL")){
                     builder.setTitle("경고").setMessage("다시 시도해 주세요").create().show();
                     return;
                 }
                 builder.setTitle("정보").setMessage("삭제 되었습니다").create().show();
-                Intent intent = new Intent(getApplicationContext(), ScheduleListActivity.class);
-                startActivity(intent);
+                finish();
             });
         });
     }

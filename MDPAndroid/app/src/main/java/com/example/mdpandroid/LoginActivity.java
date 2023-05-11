@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements tools {
                 if (user != null) {
                     // 유저 정보가 정상 전달 되었을 경우
                     Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
-
+                    Log.i("email", "email : " + user.getKakaoAccount().getEmail());
 //                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
 //                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
 
@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements tools {
                     // 로그인 시 오류 났을 때
                     // 키해시가 등록 안 되어 있으면 오류 납니다.
                     Log.w("error", "invoke: " + throwable.getLocalizedMessage());
+                    builder.setTitle("경고").setMessage("아이디 또는 비밀번호가 일치하지 않습니다").create().show();
                 }
                 return null;
             }
@@ -98,7 +99,8 @@ public class LoginActivity extends AppCompatActivity implements tools {
         editor = pref.edit();
         editor.clear();
         editor.apply();
-        editor.putString("ip", "http://10.137.208.247:8080");
+//        editor.putString("ip", "http://10.137.208.247:8080");
+        editor.putString("ip", "http://10.137.208.120:8080");
         editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
         editor.apply();
     }
@@ -125,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements tools {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+
                 Observable<String> obs = jsonToServer(url, json, "POST", null); //get요청에는 Request body를 담을 수 없어서 post로 보냄 url에 담는거 보안 상 위험(https가 최고의 방법)
                 obs.subscribe(r->{
                     if(r.equals("FAIL")){
@@ -139,7 +142,9 @@ public class LoginActivity extends AppCompatActivity implements tools {
                         editor.putString("userNo", user.getString("userNo"));
                         editor.apply();
 
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SeatActivity.class);
+                        intent.putExtra("vihicleid", "TW900");
                         startActivity(intent);
                     }
                 });
