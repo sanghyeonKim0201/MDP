@@ -5,7 +5,7 @@ import { User } from "./UserEntity";
 export class Fingers{
     @PrimaryGeneratedColumn({type : "int", name : "f_no"})
     fingerNo : number
-    @Column("int", {name : "f_finger"})
+    @Column("varchar", {name : "f_finger"})
     finger : string
     @ManyToOne(()=>User,(user)=>user.userNo, {cascade : true, eager : true})
     @JoinColumn({name : "u_no"})
