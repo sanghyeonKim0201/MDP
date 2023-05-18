@@ -19,7 +19,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Fingers.prototype, "fingerNo", void 0);
 __decorate([
-    (0, typeorm_1.Column)("int", { name: "f_finger" }),
+    (0, typeorm_1.Column)("varchar", { name: "f_finger" }),
     __metadata("design:type", String)
 ], Fingers.prototype, "finger", void 0);
 __decorate([

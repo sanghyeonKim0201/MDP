@@ -11,13 +11,13 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -100,7 +100,9 @@ public class SeatActivity extends AppCompatActivity implements tools{
             this.margin = margin;
             this.using = using;
             init(context);
-            event();
+            setOnClickListener(a->{
+                if(using)event();
+            });
         }
         void init(Context context){
             if(using){
@@ -132,7 +134,7 @@ public class SeatActivity extends AppCompatActivity implements tools{
                     urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + pref.getString("openAPI", null)); /*Service Key*/
                     urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
 
-                    Observable airline = jsonToServer(urlBuilder.toString(), null, "GET", null);
+                    Observable airline = jsonToServer(urlBuilder.toString(), null, "GET",null);
                     airline.subscribe(a->{
                         JSONObject jsonObject = new JSONObject(a.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
@@ -151,14 +153,27 @@ public class SeatActivity extends AppCompatActivity implements tools{
                         json.put("depPlandTime", depPlandTime);
                         json.put("vihicleId", vihicleId);
                         json.put("airlineId", airLine.entrySet().stream().filter(e->e.getValue().toString().indexOf(airlineNm) != -1).map(e->e.getKey().toString()).findAny().get().toString());
+                        json.put("seat", text);
                         String url = pref.getString("ip", null) + "/api/schedules/reservation";
+
+                        System.out.println(json.getString("airlineId") + ", "
+                                + json.getString("airlineName") + ", "
+                                + json.getString("arrAirportId") + ", "
+                                + json.getString("arrAirportName") + ", "
+                                + json.getString("arrPlandTime") + ", " +
+                                json.getString("depAirportId") + ", " +
+                                json.getString("depAirportName") + ", " +
+                                json.getString("depPlandTime") + ", " +
+                                json.getString("vihicleId") + ", " +
+                                json.getString("seat"));
+
                         Observable obs = jsonToServer(url, json, "POST", pref.getString("token", null));
                         obs.subscribe(e->{
                             if(e.equals("FAIL")){
-                                builder.setTitle("경고").setMessage("항공권 예약에 실패하였습니다").create().show();
+                                Toast.makeText(getApplicationContext(), "예약 실패", Toast.LENGTH_SHORT);
                                 return;
                             }
-                            builder.setTitle("정보").setMessage("항공권 예약에 성공하였습니다").create().show();
+                            Toast.makeText(getApplicationContext(), "예약 성공", Toast.LENGTH_SHORT);
                             finish();
                         });
                     });
