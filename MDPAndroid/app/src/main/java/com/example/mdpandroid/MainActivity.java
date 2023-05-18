@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements tools {
                 int txt1 = Integer.parseInt(txt[0].getText().toString());
                 int txt2 = Integer.parseInt(txt[1].getText().toString());
                 int txt3 = Integer.parseInt(txt[2].getText().toString());
-
                 LocalDate localDate = LocalDate.parse(String.format("%04d-%02d-%02d", txt1, txt2, txt3));
                 if(LocalDate.now().toEpochDay() > localDate.toEpochDay()){
                     builder.setTitle("경고").setMessage("이미 지난 날은 예약 불가 합니다").create().show();
@@ -151,21 +150,25 @@ public class MainActivity extends AppCompatActivity implements tools {
                     + URLEncoder.encode("json", "UTF-8")); /* 데이터 타입(xml, json) */
 
             Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET", null);
-            jsonStr.subscribe(r->{
-                JSONObject jsonObject = new JSONObject(r.toString());
-                JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
-                for(int i =0; i <  jsonArray.length(); i++){
-                    JSONObject item = jsonArray.getJSONObject(i);
-                    airPlane.put(item.getString("airportId"), item.getString("airportNm"));
-                }
-                ArrayAdapter<String> array = new ArrayAdapter<String>(MainActivity.this,
-                        android.R.layout.simple_spinner_item,
-                        airPlane.entrySet().stream().map(a->
-                    a.getValue()
-                ).toArray(String[]::new));
-                array.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                com[0].setAdapter(array);
-            });
+            try {
+                jsonStr.subscribe(r->{
+                    JSONObject jsonObject = new JSONObject(r.toString());
+                    JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
+                    for(int i =0; i <  jsonArray.length(); i++){
+                        JSONObject item = jsonArray.getJSONObject(i);
+                        airPlane.put(item.getString("airportId"), item.getString("airportNm"));
+                    }
+                    ArrayAdapter<String> array = new ArrayAdapter<String>(MainActivity.this,
+                            android.R.layout.simple_spinner_item,
+                            airPlane.entrySet().stream().map(a->
+                        a.getValue()
+                    ).toArray(String[]::new));
+                    array.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    com[0].setAdapter(array);
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }catch (Exception e){
             e.printStackTrace();

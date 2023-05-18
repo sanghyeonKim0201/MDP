@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
+@Entity(name = "schedules")
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -34,12 +34,14 @@ public class Schedule {
     private String depPlandTime;
     @Column(name = "s_vihicleId")
     private String vihicleId;
+    @Column(name = "s_seat")
+    private String seat;
     @ManyToOne
     @JoinColumn(name = "u_no")
     private User userNo;
 
     @Builder
-    public Schedule(Long scheduleNo, String airlineName, String arrAirportId, String depAirportId, String arrPlandTime, String depPlandTime, String vihicleId, User userNo, String airlineId, String arrAirportName, String depAirportName){
+    public Schedule(Long scheduleNo, String airlineName, String arrAirportId, String depAirportId, String arrPlandTime, String depPlandTime, String vihicleId, User userNo, String airlineId, String arrAirportName, String depAirportName, String seat){
         this.scheduleNo = scheduleNo;
         this.airlineName = airlineName;
         this.arrAirportName = arrAirportName;
@@ -51,5 +53,6 @@ public class Schedule {
         this.arrAirportId= arrAirportId;
         this.depAirportId= depAirportId;
         this.airlineId= airlineId;
+        this.seat = seat;
     }
 }

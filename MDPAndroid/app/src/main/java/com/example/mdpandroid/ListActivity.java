@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -107,6 +108,8 @@ public class ListActivity extends AppCompatActivity implements tools {
         String arrPlandTime;
         String depPlandTime;
         String vihicleId;
+        String depAirportId;
+        String arrAirportId;
         public Panel(Context context, String airlineNm, String arrAirportNm, String depAirportNm, String arrPlandTime, String depPlandTime, String vihicleId){
             super(context);
             this.airlineNm = airlineNm;
@@ -115,67 +118,23 @@ public class ListActivity extends AppCompatActivity implements tools {
             this.arrPlandTime = LocalDateTime.parse(arrPlandTime, DateTimeFormatter.ofPattern("yyyyMMddHHmm")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             this.depPlandTime = LocalDateTime.parse(depPlandTime, DateTimeFormatter.ofPattern("yyyyMMddHHmm")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             this.vihicleId = vihicleId;
-
+            depAirportId = info[0];
+            arrAirportId = info[1];
             init(context);
             event();
         }
         void event(){
             setOnClickListener(a->{
-                AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
-                builder.setTitle("정보").setMessage("이 일정으로 예약하시겠습니까?");
-                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-                builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        try {
-
-                            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getAirmanList");
-                            urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + pref.getString("openAPI", null)); /*Service Key*/
-                            urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
-
-                            Observable airline = jsonToServer(urlBuilder.toString(), null, "GET", null);
-                            airline.subscribe(a->{
-                                JSONObject jsonObject = new JSONObject(a.toString());
-                                JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
-                                HashMap<String, Object>airLine = new HashMap<>();
-                                for(int i =0; i <  jsonArray.length(); i++){
-                                    JSONObject item = jsonArray.getJSONObject(i);
-                                    airLine.put(item.getString("airlineId"), item.getString("airlineNm"));
-                                }
-                                JSONObject json = new JSONObject();
-                                json.put("airlineName", airlineNm);
-                                json.put("depAirportName", depAirportNm);
-                                json.put("arrAirportName", arrAirportNm);
-                                json.put("depAirportId", info[0]);
-                                json.put("arrAirportId", info[1]);
-                                json.put("arrPlandTime", arrPlandTime);
-                                json.put("depPlandTime", depPlandTime);
-                                json.put("vihicleId", vihicleId);
-                                json.put("airlineId", airLine.entrySet().stream().filter(e->e.getValue().toString().indexOf(airlineNm) != -1).map(e->e.getKey().toString()).findAny().get().toString());
-                                System.out.println(json.getString("airlineId"));
-                                String url = pref.getString("ip", null) + "/api/schedules/reservation";
-                                Observable obs = jsonToServer(url, json, "POST", pref.getString("token", null));
-                                obs.subscribe(e->{
-                                    if(e.equals("FAIL")){
-                                        builder.setTitle("경고").setMessage("항공권 예약에 실패하였습니다").create().show();
-                                        return;
-                                    }
-                                    builder.setTitle("정보").setMessage("항공권 예약에 성공하였습니다").create().show();
-                                    finish();
-                                });
-                            });
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                builder.show();
+                Intent intent = new Intent(getApplicationContext(), SeatActivity.class);
+                intent.putExtra("airlineNm", airlineNm);
+                intent.putExtra("arrAirportNm", arrAirportNm);
+                intent.putExtra("depAirportNm", depAirportNm);
+                intent.putExtra("arrPlandTime", arrPlandTime);
+                intent.putExtra("depPlandTime", depPlandTime);
+                intent.putExtra("vihicleid", vihicleId);
+                intent.putExtra("depAirportId", depAirportId);
+                intent.putExtra("arrAirportId", arrAirportId);
+                startActivity(intent);
             });
         }
         void init(Context context){
