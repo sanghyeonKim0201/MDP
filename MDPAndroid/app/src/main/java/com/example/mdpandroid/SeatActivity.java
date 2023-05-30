@@ -155,7 +155,6 @@ public class SeatActivity extends AppCompatActivity implements tools{
                         json.put("airlineId", airLine.entrySet().stream().filter(e->e.getValue().toString().indexOf(airlineNm) != -1).map(e->e.getKey().toString()).findAny().get().toString());
                         json.put("seat", text);
                         String url = pref.getString("ip", null) + "/api/schedules/reservation";
-
                         System.out.println(json.getString("airlineId") + ", "
                                 + json.getString("airlineName") + ", "
                                 + json.getString("arrAirportId") + ", "
