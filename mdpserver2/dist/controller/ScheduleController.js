@@ -62,6 +62,7 @@ let ScheduleController = class ScheduleController {
 };
 __decorate([
     (0, common_1.Post)("reservation"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)()),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({
         summary: "reservationAPI",
@@ -85,6 +86,7 @@ __decorate([
 ], ScheduleController.prototype, "reservation", null);
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)()),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({
         summary: "reservationListAPI",
@@ -107,6 +109,7 @@ __decorate([
 ], ScheduleController.prototype, "reservationList", null);
 __decorate([
     (0, common_1.Get)("vihicleid/:vihicleid"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)()),
     (0, swagger_1.ApiBearerAuth)(),
     __param(0, (0, common_1.Param)("vihicleid")),
     __metadata("design:type", Function),
@@ -137,6 +140,7 @@ __decorate([
 ], ScheduleController.prototype, "reservationInfo", null);
 __decorate([
     (0, common_1.Delete)(":scheduleNo"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)()),
     (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiOperation)({
         summary: "reservationDeleteAPI",
@@ -160,7 +164,6 @@ __decorate([
 ScheduleController = __decorate([
     (0, swagger_1.ApiTags)("schedules"),
     (0, common_1.Controller)("api/schedules"),
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)()),
     __metadata("design:paramtypes", [ScheduleService_1.ScheduleService])
 ], ScheduleController);
 exports.ScheduleController = ScheduleController;

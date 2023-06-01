@@ -10,7 +10,7 @@ import { FailResponseData, SuccessResponseData } from "src/swagger/response/User
 
 @ApiTags("schedules")
 @Controller("api/schedules")
-@UseGuards(AuthGuard())
+// @UseGuards(AuthGuard())
 export class ScheduleController{
 
     constructor(private scheduleService : ScheduleService){
@@ -18,6 +18,7 @@ export class ScheduleController{
     }
 
     @Post("reservation")
+    @UseGuards(AuthGuard())
     @ApiBearerAuth()
     @ApiOperation({
         summary : "reservationAPI",
@@ -44,6 +45,7 @@ export class ScheduleController{
     }
     
     @Get()
+    @UseGuards(AuthGuard())
     @ApiBearerAuth()
     @ApiOperation({
         summary : "reservationListAPI",
@@ -67,6 +69,7 @@ export class ScheduleController{
     }
     
     @Get("vihicleid/:vihicleid")
+    @UseGuards(AuthGuard())
     @ApiBearerAuth()
     async reservationSeat(@Param("vihicleid")vihicleid : string){
         const result = await this.scheduleService.getSeat(vihicleid)
@@ -98,6 +101,7 @@ export class ScheduleController{
         }),200)
     }
     @Delete(":scheduleNo")
+    @UseGuards(AuthGuard())
     @ApiBearerAuth()
     @ApiOperation({
         summary : "reservationDeleteAPI",

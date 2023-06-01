@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity implements tools {
     Button btn;
     TextView joinTxt;
     AlertDialog.Builder builder;
-    ImageView kakaoBtn;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     @Override
@@ -44,54 +43,10 @@ public class LoginActivity extends AppCompatActivity implements tools {
         event();
         Log.d("getKeyHash", "" + getKeyHash(LoginActivity.this));
     }
-    Function2 callBack(){
-        Function2<OAuthToken, Throwable, Unit> callback = new Function2<OAuthToken, Throwable, Unit>() {
-            @Override
-            public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
-                if (oAuthToken != null) {
-                    Log.i("user", oAuthToken.getAccessToken() + " " + oAuthToken.getRefreshToken());
-                }
-                if (throwable != null) {
-                    // TBD
-                    Log.w("error", "invoke: " + throwable.getLocalizedMessage());
-                }
-                updateKakaoLoginUi();
-
-                return null;
-            }
-        };
-        return callback;
-    }
-    void updateKakaoLoginUi(){
-        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
-            @Override
-            public Unit invoke(User user, Throwable throwable) {
-                if (user != null) {
-                    // 유저 정보가 정상 전달 되었을 경우
-                    Log.i("id", "id " + user.getId());   // 유저의 고유 아이디를 불러옵니다.
-                    Log.i("email", "email : " + user.getKakaoAccount().getEmail());
-//                    Log.i("invoke", "invoke: nickname=" + user.getKakaoAccount().getProfile().getNickname());  // 유저의 닉네임을 불러옵니다.
-//                    Log.i("userimage", "userimage " + user.getKakaoAccount().getProfile().getProfileImageUrl());    // 유저의 이미지 URL을 불러옵니다.
-
-                    // 이 부분에는 로그인이 정상적으로 되었을 경우 어떤 일을 수행할 지 적으면 됩니다.
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                if (throwable != null) {
-                    // 로그인 시 오류 났을 때
-                    // 키해시가 등록 안 되어 있으면 오류 납니다.
-                    Log.w("error", "invoke: " + throwable.getLocalizedMessage());
-                    builder.setTitle("경고").setMessage("아이디 또는 비밀번호가 일치하지 않습니다").create().show();
-                }
-                return null;
-            }
-        });
-    }
     void data(){
         for(int i = 0; i < txtBox.length; i++){
             txtBox[i] = findViewById(new int[]{R.id.idTxt, R.id.pwTxt}[i]);
         }
-        kakaoBtn = findViewById(R.id.kakaoBtn);
         btn = findViewById(R.id.loginButton);
         joinTxt = findViewById(R.id.joinTxt);
         builder = new AlertDialog.Builder(LoginActivity.this);
@@ -99,8 +54,10 @@ public class LoginActivity extends AppCompatActivity implements tools {
         editor = pref.edit();
         editor.clear();
         editor.apply();
-        editor.putString("ip", "http://10.137.208.190:8080");
-        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
+//        editor.putString("ip", "http://10.137.208.190:8080");
+//        editor.putString("ip", "http://192.168.101.139:8080");//마이스터 맥
+        editor.putString("ip", "http://192.168.0.26:8080");//프로젝트 투
+        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8W.VBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
         editor.apply();
     }
     void event(){
@@ -147,13 +104,7 @@ public class LoginActivity extends AppCompatActivity implements tools {
                 });
             }
         });
-        kakaoBtn.setOnClickListener(a->{
-            if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(LoginActivity.this)){
-                UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, callBack());
-            }else{
-                UserApiClient.getInstance().loginWithKakaoAccount(LoginActivity.this, callBack());
-            }
-        });
+
     }
 
 }

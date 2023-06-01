@@ -61,6 +61,17 @@ public class InfoActivity extends AppCompatActivity implements tools{
                return;
            }
 
+            try {
+                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                //회원 인증을 위한 회원정보를 담고 있는 QR코드 생성
+//            Bitmap bitmap = barcodeEncoder.encodeBitmap(pref.getString("ip", null) +  "/api/users/" + pref.getString("userNo", null), BarcodeFormat.QR_CODE, 200, 200);
+                Bitmap bitmap = barcodeEncoder.encodeBitmap(url, BarcodeFormat.QR_CODE, 200, 200);
+                ImageView image = findViewById(R.id.qrcode);
+                image.setImageBitmap(bitmap);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
            JSONObject json = new JSONObject(a.toString());
 
            for(int i = 0; i < txt.length; i++){
@@ -74,15 +85,16 @@ public class InfoActivity extends AppCompatActivity implements tools{
            }
         });
 
-        try {
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            //회원 인증을 위한 회원정보를 담고 있는 QR코드 생성
-            Bitmap bitmap = barcodeEncoder.encodeBitmap(pref.getString("ip", null) +  "/api/users/" + pref.getString("userNo", null), BarcodeFormat.QR_CODE, 200, 200);
-            ImageView image = findViewById(R.id.qrcode);
-            image.setImageBitmap(bitmap);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+//            //회원 인증을 위한 회원정보를 담고 있는 QR코드 생성
+////            Bitmap bitmap = barcodeEncoder.encodeBitmap(pref.getString("ip", null) +  "/api/users/" + pref.getString("userNo", null), BarcodeFormat.QR_CODE, 200, 200);
+//            Bitmap bitmap = barcodeEncoder.encodeBitmap(pref.getString("ip", null) +  "/api/schedules/" + getIntent().getStringExtra("no"), BarcodeFormat.QR_CODE, 200, 200);
+//            ImageView image = findViewById(R.id.qrcode);
+//            image.setImageBitmap(bitmap);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
     void event(){
         infoBtn.setOnClickListener(a->{

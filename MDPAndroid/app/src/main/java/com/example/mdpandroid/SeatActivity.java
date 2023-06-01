@@ -1,6 +1,7 @@
 package com.example.mdpandroid;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -40,6 +41,8 @@ public class SeatActivity extends AppCompatActivity implements tools{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         seatPage = findViewById(R.id.seatPage);
         try {
             loadData();
@@ -129,7 +132,6 @@ public class SeatActivity extends AppCompatActivity implements tools{
             });
             builder.setPositiveButton("네", (dialogInterface, i) -> {
                 try {
-
                     StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/DmstcFlightNvgInfoService/getAirmanList");
                     urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + pref.getString("openAPI", null)); /*Service Key*/
                     urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
@@ -168,6 +170,7 @@ public class SeatActivity extends AppCompatActivity implements tools{
 
                         Observable obs = jsonToServer(url, json, "POST", pref.getString("token", null));
                         obs.subscribe(e->{
+                            System.out.println("ASDASDASDASD");
                             if(e.equals("FAIL")){
                                 Toast.makeText(getApplicationContext(), "예약 실패", Toast.LENGTH_SHORT);
                                 return;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Android_QR.iml" filepath="$PROJECT_DIR$/.idea/modules/Android_QR.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android_QR.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android_QR.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android_QR.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android_QR.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android_QR.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android_QR.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Android_QR.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Android_QR.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>
