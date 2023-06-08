@@ -128,8 +128,9 @@ public class JoinActivity extends AppCompatActivity implements tools {
                             return;
                         }else{
                             builder.setTitle("정보").setMessage("사용가능한 아이디 입니다").create().show();
+                            check = true;
+                            return;
                         }
-                        check = true;
                     });
                 }else if(a.getId() == R.id.nextBtn){
                     for(int i = 0; i < infoPages.length; i++){
@@ -146,46 +147,47 @@ public class JoinActivity extends AppCompatActivity implements tools {
                             return;
                         }
                     }
-                    if(!txtBox[0].getText().toString().matches(".*[ㄱ_힣].*")){
-                        builder.setTitle("경고").setMessage("한글 이름 칸은 한글만 사용 가능 합니다").create().show();
-                        return;
-                    }
+//                    if(!txtBox[0].getText().toString().matches(".*[ㄱ_힣].*")){
+//                        builder.setTitle("경고").setMessage("한글 이름 칸은 한글만 사용 가능 합니다").create().show();
+//                        return;
+//                    }
+
 
                     if(check=false){
                         builder.setTitle("경고").setMessage("아이디 중복 확인을 해주십시오").create().show();
                         return;
                     }
-                    if(!txtBox[2].getText().equals(txtBox[3].getText())){
-                        builder.setTitle("경고").setMessage("비밀번호와 비밀번호 확인이 다릅니다").create().show();
-                        return;
-                    }
+//                    if(!txtBox[2].getText().equals(txtBox[3].getText())){
+//                        builder.setTitle("경고").setMessage("비밀번호와 비밀번호 확인이 다릅니다").create().show();
+//                        return;
+//                    }
+//
+//                    if(!txtBox[4].getText().toString().matches("\\d{4}-\\d{2}-\\d{2}")){
+//                        builder.setTitle("경고").setMessage("날짜 형식은 yyyy-MM-dd입니다").create().show();
+//                        return;
+//                    }
+//                    try {
+//                        if(LocalDate.parse(txtBox[4].getText()).toEpochDay() > LocalDate.now().toEpochDay()){
+//                            builder.setTitle("경고").setMessage("미래의 날짜 입니다").create().show();
+//                            return;
+//                        }
+//                    }catch (Exception e){
+//                        builder.setTitle("경고").setMessage("존재하지 않는 날짜 입니다").create().show();
+//                        return;
+//                    }
+//                    if(!txtBox[5].getText().toString().matches("010-\\d{4}-\\d{4}")){
+//                        builder.setTitle("경고").setMessage("전화번호 형식은 010-0000-0000입니다").create().show();
+//                        return;
+//                    }
+//                    if(!txtBox[6].getText().toString().matches(".*[a-zA-Z].*")){
+//                        builder.setTitle("경고").setMessage("영어 이름 칸은 알파벳만 사용 가능 합니다").create().show();
+//                        return;
+//                    }
 
-                    if(!txtBox[4].getText().toString().matches("\\d{4}-\\d{2}-\\d{2}")){
-                        builder.setTitle("경고").setMessage("날짜 형식은 yyyy-MM-dd입니다").create().show();
-                        return;
-                    }
-                    try {
-                        if(LocalDate.parse(txtBox[4].getText()).toEpochDay() > LocalDate.now().toEpochDay()){
-                            builder.setTitle("경고").setMessage("미래의 날짜 입니다").create().show();
-                            return;
-                        }
-                    }catch (Exception e){
-                        builder.setTitle("경고").setMessage("존재하지 않는 날짜 입니다").create().show();
-                        return;
-                    }
-                    if(!txtBox[5].getText().toString().matches("010-\\d{4}-\\d{4}")){
-                        builder.setTitle("경고").setMessage("전화번호 형식은 010-0000-0000입니다").create().show();
-                        return;
-                    }
-                    if(!txtBox[6].getText().toString().matches(".*[a-zA-Z].*")){
-                        builder.setTitle("경고").setMessage("영어 이름 칸은 알파벳만 사용 가능 합니다").create().show();
-                        return;
-                    }
-
-                    if(imageArr.size() < 5){
-                        builder.setTitle("경고").setMessage(5 - imageArr.size() + "번 사진을 더 찍어 주세요").create().show();
-                        return;
-                    }
+//                    if(imageArr.size() < 5){
+//                        builder.setTitle("경고").setMessage(5 - imageArr.size() + "번 사진을 더 찍어 주세요").create().show();
+//                        return;
+//                    }
 
                     String url = pref.getString("ip", null) + "/api/users/join";
                     JSONObject json = new JSONObject();
@@ -205,6 +207,7 @@ public class JoinActivity extends AppCompatActivity implements tools {
                            return;
                        }
                        builder.setTitle("정보").setMessage("회원가입이 완료되었습니다").create().show();
+
                        finish();
                     });
                 }
