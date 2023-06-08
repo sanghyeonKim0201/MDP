@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements tools {
             urlBuilder.append("&" + URLEncoder.encode("_type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
             Observable jsonStr = jsonToServer(urlBuilder.toString(), null, "GET", null);
             jsonStr.subscribe(r->{
+                System.out.println("ASD " + r.toString());
                 JSONObject jsonObject = new JSONObject(r.toString());
                 JSONArray jsonArray = jsonObject.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
                 for(int i =0; i <  jsonArray.length(); i++){

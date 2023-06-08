@@ -52,6 +52,7 @@ public class InfoActivity extends AppCompatActivity implements tools{
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
         String url = pref.getString("ip", null) + "/api/schedules/" + scheduleNo;
+//        String url =  "http://211.46.129.143:8080/api/schedules/" + scheduleNo;
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 
         Observable obs = jsonToServer(url, null, "GET", pref.getString("token", null));

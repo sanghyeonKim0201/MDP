@@ -54,10 +54,10 @@ public class LoginActivity extends AppCompatActivity implements tools {
         editor = pref.edit();
         editor.clear();
         editor.apply();
-//        editor.putString("ip", "http://10.137.208.190:8080");
-//        editor.putString("ip", "http://192.168.101.139:8080");//마이스터 맥
-        editor.putString("ip", "http://192.168.0.26:8080");//프로젝트 투
-        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8W.VBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
+        editor.putString("ip", "http://192.168.0.10:8080");//프로젝트 투
+//        editor.putString("ip", "http://211.46.129.143:8080");//프로젝트 투
+        editor.putString("openAPI", "7lRppNnHg01uoL8pDhfJF3DAp8WVBgw0KGy01sVLzOaf0hgWe4ALjmk8NgWlQpYFaJcuNuXfLIHhVxP6oNpb%2BA%3D%3D");
+
         editor.apply();
     }
     void event(){
