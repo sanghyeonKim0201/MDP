@@ -49,6 +49,7 @@ public class InfoActivity extends AppCompatActivity implements tools{
         for(int i = 0; i < txt.length; i++){
             txt[i] = findViewById(new int[]{R.id.depAirportName, R.id.depAirportId, R.id.arrAirportName, R.id.arrAirportId, R.id.depTime, R.id.airlineName, R.id.vihicleId, R.id.arrTime}[i]);
         }
+        
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
         String url = pref.getString("ip", null) + "/api/schedules/" + scheduleNo;

@@ -1,0 +1,1 @@
+{"version":3,"file":"PictureDto.js","sourceRoot":"","sources":["../../src/dto/PictureDto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,6CAA6C;AAC7C,4DAAmD;AAEnD,MAAa,UAAU;CAWtB;AAVG;IAAC,IAAA,qBAAW,EAAC;QACT,OAAO,EAAG,eAAe;QACzB,WAAW,EAAG,kBAAkB;KACnC,CAAC;;2CACc;AAChB;IAAC,IAAA,qBAAW,EAAC;QACT,OAAO,EAAG,GAAG;QACb,WAAW,EAAG,OAAO;KACxB,CAAC;8BACO,iBAAI;0CAAA;AAVjB,gCAWC"}

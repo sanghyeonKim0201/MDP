@@ -1,37 +1,52 @@
 package com.example.mdpandroid;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
 import io.reactivex.rxjava3.core.Observable;
 
 public class JoinActivity extends AppCompatActivity implements tools {
-
+    private static final int REQUEST_CAMERA_PERMISSION = 100;
+    private static final int REQUEST_IMAGE_CAPTURE = 200;
     EditText[] txtBox = new EditText[7];
     Button[] btn = new Button[4];
+    Button imageCheck;
+    ImageView imageView;
     AlertDialog.Builder builder;
     LinearLayout infoPages[] = new LinearLayout[2];
     Boolean check = false;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
+    ArrayList<String> imageArr = new ArrayList();
+    Bitmap imageBitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +56,61 @@ public class JoinActivity extends AppCompatActivity implements tools {
         actionBar.hide();
         data();
         event();
+        imageView.setImageResource(R.drawable.ic_launcher_background);
         infoPages[1].setVisibility(View.GONE);
 
     }
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        } else {
+            Toast.makeText(this, "No camera app available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
     void event(){
+        imageView.setOnClickListener(a->{
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CAMERA},
+                        REQUEST_CAMERA_PERMISSION);
+            } else {
+                openCamera();
+            }
+        });
+        imageCheck.setOnClickListener(a->{
+            String imageData = bitmapToBase64(imageBitmap);
+//            String url = pref.getString("ip", null) + "/api/users/picture";
+        });
         for(Button b : btn){
             b.setOnClickListener(a->{
                 if(a.getId() == R.id.checkBtn){
@@ -115,6 +181,12 @@ public class JoinActivity extends AppCompatActivity implements tools {
                         builder.setTitle("경고").setMessage("영어 이름 칸은 알파벳만 사용 가능 합니다").create().show();
                         return;
                     }
+
+                    if(imageArr.size() < 5){
+                        builder.setTitle("경고").setMessage(5 - imageArr.size() + "번 사진을 더 찍어 주세요").create().show();
+                        return;
+                    }
+
                     String url = pref.getString("ip", null) + "/api/users/join";
                     JSONObject json = new JSONObject();
                     for(int i = 0; i < txtBox.length; i++){
@@ -125,43 +197,6 @@ public class JoinActivity extends AppCompatActivity implements tools {
                             e.printStackTrace();
                         }
                     }
-
-                    Executor executor = ContextCompat.getMainExecutor(this);
-                    BiometricPrompt biometricPrompt = new BiometricPrompt(this,
-                            executor, new BiometricPrompt.AuthenticationCallback() {
-                        @Override
-                        public void onAuthenticationError(int errorCode,
-                                                          @NonNull CharSequence errString) {
-                            super.onAuthenticationError(errorCode, errString);
-                            Toast.makeText(getApplicationContext(),
-                                            "실패", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-
-                        @Override
-                        public void onAuthenticationSucceeded(
-                                @NonNull BiometricPrompt.AuthenticationResult result) {
-                            super.onAuthenticationSucceeded(result);
-                            Toast.makeText(getApplicationContext(),
-                                    "성공", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onAuthenticationFailed() {
-                            super.onAuthenticationFailed();
-                            Toast.makeText(getApplicationContext(), "실패",
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    });
-
-                     BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                            .setTitle("지문 인증")
-                            .setSubtitle("기기에 등록된 지문을 이용하여 지문을 인증해주세요.")
-                            .setNegativeButtonText("취소")
-                            .setDeviceCredentialAllowed(false)
-                            .build();
-                    biometricPrompt.authenticate(promptInfo);
 
                     Observable obs = jsonToServer(url, json, "POST", null);
                     obs.subscribe(e->{
@@ -177,6 +212,8 @@ public class JoinActivity extends AppCompatActivity implements tools {
         }
     }
     void data(){
+        imageCheck = findViewById(R.id.imageCheck);
+        imageView = findViewById(R.id.imageView);
         for(int i = 0; i < txtBox.length; i++){
             txtBox[i] = findViewById(new int[]{R.id.nameKoTxt, R.id.userId, R.id.userPw, R.id.userPwCheck,
             R.id.userBirth, R.id.userPhone, R.id.nameEn}[i]);

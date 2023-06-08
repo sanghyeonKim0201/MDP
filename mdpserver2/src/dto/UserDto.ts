@@ -1,6 +1,7 @@
 
 import { ApiProperty } from "@nestjs/swagger"
 import { IsNumber, IsString } from "class-validator"
+import { User } from "src/domain/entity/UserEntity"
 
 export class UserDTO{
     @IsNumber()

@@ -9,26 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Picture = void 0;
+exports.PictureRepository = void 0;
+const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
-const UserEntity_1 = require("./UserEntity");
-let Picture = class Picture {
+const PictureEntity_1 = require("../entity/PictureEntity");
+let PictureRepository = class PictureRepository extends typeorm_1.Repository {
+    constructor(dataSoucre) {
+        super(PictureEntity_1.Picture, dataSoucre.createEntityManager());
+        this.dataSoucre = dataSoucre;
+    }
 };
-__decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)({ type: "int", name: "p_no" }),
-    __metadata("design:type", Number)
-], Picture.prototype, "pictureNo", void 0);
-__decorate([
-    (0, typeorm_1.Column)("longblob", { name: "p_picture" }),
-    __metadata("design:type", String)
-], Picture.prototype, "picture", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => UserEntity_1.User, (user) => user.userNo, { cascade: true, eager: true }),
-    (0, typeorm_1.JoinColumn)({ name: "u_no" }),
-    __metadata("design:type", UserEntity_1.User)
-], Picture.prototype, "userNo", void 0);
-Picture = __decorate([
-    (0, typeorm_1.Entity)("pictures")
-], Picture);
-exports.Picture = Picture;
-//# sourceMappingURL=PictureEntity.js.map
+PictureRepository = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [typeorm_1.DataSource])
+], PictureRepository);
+exports.PictureRepository = PictureRepository;
+//# sourceMappingURL=PictureRepository.js.map

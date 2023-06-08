@@ -1,5 +1,5 @@
 import {  Injectable } from "@nestjs/common";
-import {  UpdateUserDTO } from "src/dto/UserDto";
+import {  UpdateUserDTO} from "src/dto/UserDto";
 import { DataSource, Repository } from "typeorm";
 import { User } from "../entity/UserEntity";
 
@@ -31,4 +31,5 @@ export class UserRepository extends Repository<User>{
             userNo : Number.parseInt(userNo)
         }).execute()
     }
+    
 }

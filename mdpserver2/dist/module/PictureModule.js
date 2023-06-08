@@ -6,19 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.PictureModule = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
-const PictureModule_1 = require("./module/PictureModule");
-const ScheduleModule_1 = require("./module/ScheduleModule");
-const UserModule_1 = require("./module/UserModule");
-const ormConfig_1 = require("./ormConfig");
-let AppModule = class AppModule {
+const PictureController_1 = require("../controller/PictureController");
+const PictureRepository_1 = require("../domain/repository/PictureRepository");
+const PictureService_1 = require("../service/PictureService");
+let PictureModule = class PictureModule {
 };
-AppModule = __decorate([
+PictureModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forRoot(ormConfig_1.ormConfig), UserModule_1.UserModule, ScheduleModule_1.ScheduleModule, PictureModule_1.PictureModule],
+        imports: [],
+        controllers: [PictureController_1.PictureController],
+        providers: [PictureRepository_1.PictureRepository, PictureService_1.PictureService]
     })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+], PictureModule);
+exports.PictureModule = PictureModule;
+//# sourceMappingURL=PictureModule.js.map
