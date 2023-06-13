@@ -71,7 +71,7 @@ public class ReceiptActivity extends AppCompatActivity implements tools {
                 Toast.makeText(getApplicationContext(), "불러오기 실패", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            System.out.println("ASDASDASDASD");
             try {
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 //회원 인증을 위한 회원정보를 담고 있는 QR코드 생성
